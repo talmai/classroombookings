@@ -22,8 +22,8 @@
 		<div class="block b-20">
 			<p class="input-group">
 				<?php
-				echo form_label('Room', 'room_id');
-				$options = array('' => '(All)');
+				echo form_label('Sala / espaço', 'room_id'); // ('Room', 'room_id');
+				$options = array('' => '(Todos)');
 				if ($rooms) {
 					foreach ($rooms as $room) {
 						$options[$room->room_id] = html_escape($room->name);
@@ -43,8 +43,8 @@
 		<div class="block b-20">
 			<p class="input-group">
 				<?php
-				echo form_label('Type', 'actor');
-				$options = array('' => '(Any)');
+				echo form_label('Tipo', 'actor');
+				$options = array('' => '(Qualquer)');
 				$options += Access_control_model::get_actors();
 				$value = element('actor', $filter);
 				echo form_dropdown([
@@ -62,7 +62,7 @@
 			<p class="input-group">
 				<?php
 				echo form_label('Department', 'department_id');
-				$options = array('' => '(Any)');
+				$options = array('' => '(Qualquer)');
 				foreach ($departments as $department) {
 					$options[$department->department_id] = html_escape($department->name);
 				}

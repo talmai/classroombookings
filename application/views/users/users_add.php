@@ -4,16 +4,19 @@ if (isset($user) && is_object($user)) {
 	$user_id = set_value('user_id', $user->user_id);
 }
 
+if ( !($this->lang->line('Type')) ) {
+	$this->lang->load('custom'); 
+}
 echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'users_add'), array('user_id' => $user_id) );
 
 ?>
 
 <fieldset>
 
-	<legend accesskey="U" tabindex="<?php echo tab_index() ?>">User Details</legend>
+	<legend accesskey="U" tabindex="<?php echo tab_index() ?>"><?= $this->lang->line('Userdetails') ?></legend>
 
 	<p>
-		<label for="username" class="required">Username</label>
+		<label for="username" class="required"><?= $this->lang->line('Username') ?></label>
 		<?php
 		$field = 'username';
 		$value = set_value($field, isset($user) ? $user->username : '', FALSE);
@@ -30,7 +33,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="authlevel" class="required">Type</label>
+		<label for="authlevel" class="required"><?= $this->lang->line('Type') ?></label>
 		<?php
 		$field = 'authlevel';
 		$value = set_value($field, isset($user) ? $user->authlevel : '2', FALSE);
@@ -46,7 +49,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="enabled">Enabled</label>
+		<label for="enabled"><?= $this->lang->line('Enabled') ?></label>
 		<?php
 		$field = 'enabled';
 		$value = isset($user) ? $user->enabled : '1';
@@ -63,7 +66,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	</p>
 
 	<p>
-		<label for="email">Email address</label>
+		<label for="email"><?= $this->lang->line('Emailaddress') ?></label>
 		<?php
 		$field = 'email';
 		$value = set_value($field, isset($user) ? $user->email : '', FALSE);
@@ -84,14 +87,14 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 
 <fieldset>
 
-	<legend accesskey="P" tabindex="<?php echo tab_index() ?>">Password</legend>
+	<legend accesskey="P" tabindex="<?php echo tab_index() ?>"><?= $this->lang->line('Password') ?></legend>
 
 	<?php if (isset($user)): ?>
-	<div>Change the user's password by entering it twice in these boxes.</div>
+	<div><?= $this->lang->line('msgChangeUserPass') ?></div>
 	<?php endif; ?>
 
 	<p>
-		<label for="password1" class="required">Password</label>
+		<label for="password1" class="required"><?= $this->lang->line('Password') ?></label>
 		<?php
 		$field = 'password1';
 		echo form_password(array(
@@ -106,7 +109,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="password2" class="required">Password (again)</label>
+		<label for="password2" class="required"><?= $this->lang->line('Password') ?> (<?= $this->lang->line('again') ?>)</label>
 		<?php
 		$field = 'password2';
 		echo form_password(array(
@@ -125,10 +128,10 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 
 <fieldset>
 
-	<legend accesskey="P" tabindex="<?php echo tab_index() ?>">Personal Details</legend>
+	<legend accesskey="P" tabindex="<?php echo tab_index() ?>"><?= $this->lang->line('PersonalDetails') ?></legend>
 
 	<p>
-		<label for="firstname">First name</label>
+		<label for="firstname"><?= $this->lang->line('Firstname') ?></label>
 		<?php
 		$field = 'firstname';
 		$value = set_value($field, isset($user) ? $user->firstname : '', FALSE);
@@ -145,7 +148,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="lastname">Last name</label>
+		<label for="lastname"><?= $this->lang->line('Lastname') ?></label>
 		<?php
 		$field = 'lastname';
 		$value = set_value($field, isset($user) ? $user->lastname : '', FALSE);
@@ -162,7 +165,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="displayname">Display name</label>
+		<label for="displayname"><?= $this->lang->line('Displayname') ?></label>
 		<?php
 		$field = 'displayname';
 		$value = set_value($field, isset($user) ? $user->displayname : '', FALSE);
@@ -179,7 +182,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="department">Department</label>
+		<label for="department"><?= $this->lang->line('Department') ?></label>
 		<?php
 		$options = array('' => '(None)');
 		if ($departments) {
@@ -198,7 +201,7 @@ echo form_open_multipart('users/save', array('class' => 'cssform', 'id' => 'user
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="ext">Phone extension</label>
+		<label for="ext"><?= $this->lang->line('Phoneextension') ?></label>
 		<?php
 		$field = 'ext';
 		$value = set_value($field, isset($user) ? $user->ext : '', FALSE);

@@ -4,16 +4,20 @@ if (isset($room) && is_object($room)) {
 	$room_id = set_value('room_id', $room->room_id);
 }
 
+if ( !($this->lang->line('AddRooms')) ) {
+	$this->lang->load('rooms');
+}
+
 echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'rooms_add'), array('room_id' => $room_id) );
 
 ?>
 
 <fieldset>
 
-	<legend accesskey="R" tabindex="<?php echo tab_index() ?>">Room details</legend>
+	<legend accesskey="R" tabindex="<?php echo tab_index() ?>"><?= $this->lang->line('Roomdetails') ?></legend>
 
 	<p>
-		<label for="name" class="required">Name</label>
+		<label for="name" class="required"><?= $this->lang->line('Name') ?></label>
 		<?php
 		$field = 'name';
 		$value = set_value($field, isset($room) ? $room->name : '', FALSE);
@@ -30,7 +34,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="location">Location</label>
+		<label for="location"><?= $this->lang->line('Location') ?></label>
 		<?php
 		$field = 'location';
 		$value = set_value($field, isset($room) ? $room->location : '', FALSE);
@@ -47,7 +51,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="user_id">Teacher</label>
+		<label for="user_id"><?= $this->lang->line('Teacher') ?></label>
 		<?php
 		$userlist = array('' => '(None)');
 		foreach ($users as $user) {
@@ -62,7 +66,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="notes">Notes</label>
+		<label for="notes"><?= $this->lang->line('Notes') ?></label>
 		<?php
 		$field = 'notes';
 		$value = set_value($field, isset($room) ? $room->notes : '', FALSE);
@@ -79,7 +83,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 	<?php echo form_error($field) ?>
 
 	<p>
-		<label for="bookable">Can be booked</label>
+		<label for="bookable"><?= $this->lang->line('Canbebooked') ?></label>
 		<?php
 		$field = 'bookable';
 		$value = isset($room) ? $room->bookable : '1';
@@ -93,7 +97,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 			'checked' => $checked,
 		));
 		?>
-		<p class="hint">Tick this box to allow bookings to be made in this room</p>
+		<p class="hint"><?= $this->lang->line('msgAllowRoomBookings') ?></p>
 	</p>
 
 </fieldset>
@@ -101,14 +105,14 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 
 <fieldset>
 
-	<legend accesskey="P" tabindex="7">Photo</legend>
+	<legend accesskey="P" tabindex="7"><?= $this->lang->line('Photo') ?></legend>
 
 	<br>
-	<div>Add a photo of the room which users will be able to view.</div>
+	<div><?= $this->lang->line('msgPhoto') ?></div>
 	<br>
 
 	<p>
-		<label>Current photo</label>
+		<label><?= $this->lang->line('Currentphoto') ?></label>
 		<?php
 		if (isset($room) && isset($room->photo) && ! empty($room->photo)) {
 			$path = "uploads/{$room->photo}";
@@ -120,13 +124,13 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 				echo '<em>None</em>';
 			}
 		} else {
-			echo '<em>None</em>';
+			echo '<em>'.$this->lang->line('None').'</em>';
 		}
 		?>
 	</p>
 
 	<p>
-		<label for="userfile">File upload</label>
+		<label for="userfile"><?= $this->lang->line('Fileupload') ?></label>
 		<?php
 		echo form_upload(array(
 			'name' => 'userfile',
@@ -139,8 +143,8 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 		?>
 		<br>
 		<br>
-		<p class="hint">Maximum filesize <span><?php echo $max_size_human ?></span>.</p>
-		<p class="hint">Uploading a new photo will <span>replace</span> the current one.</p>
+		<p class="hint"><?= $this->lang->line('Maximumfilesize') ?> <span><?php echo $max_size_human ?></span>.</p>
+		<p class="hint"><?= $this->lang->line('msgUploadingPhoto') ?></p>
 	</p>
 
 	<?php
@@ -153,7 +157,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 	<?php if (isset($room) && ! empty($room->photo)): ?>
 
 	<p>
-		<label for="photo_delete">Delete photo?</label>
+		<label for="photo_delete"><?= $this->lang->line('DeletePhoto') ?>?</label>
 		<?php
 		$field = 'photo_delete';
 		echo form_hidden($field, '0');
@@ -165,7 +169,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 			'checked' => FALSE,
 		));
 		?>
-		<p class="hint">Tick this box to <span>remove the current photo</span> without adding a new one.</p>
+		<p class="hint"><?= $this->lang->line('msgBoxRemovePhoto') ?></p>
 	</p>
 
 	<?php endif; ?>
@@ -177,7 +181,7 @@ echo form_open_multipart('rooms/save', array('class' => 'cssform', 'id' => 'room
 
 <fieldset>
 
-	<legend accesskey="F" tabindex="<?php echo tab_index() ?>">Fields</legend>
+	<legend accesskey="F" tabindex="<?php echo tab_index() ?>"><?= $this->lang->line('Fields') ?></legend>
 
 	<?php
 

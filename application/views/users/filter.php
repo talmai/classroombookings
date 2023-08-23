@@ -19,7 +19,7 @@
 		<div class="block b-20">
 			<p class="input-group">
 				<?php
-				echo form_label('Search', 'q');
+				echo form_label($this->lang->line('Search'), 'q');
 				$value = set_value('q');
 				echo form_input([
 					'name' => 'q',

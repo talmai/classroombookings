@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 function up_target()
 {

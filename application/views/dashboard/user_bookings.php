@@ -9,13 +9,13 @@ $time_format = setting('time_format_period');
 
 		<div class="box">
 
-			<h3 style="margin: 0 0 16px 0">Active bookings</h3>
+			<h3 style="margin: 0 0 16px 0"><?= $this->lang->line('Activebookings') ?></h3>
 			<ul class="dash-booking-list">
 
 				<?php
 				foreach ($user_bookings as $booking) {
 
-					$date_str = $booking->date->format($date_format);
+					$date_str =  $this->lang->diaTraduzido($booking->date, 'EEEE, d LLLL yyyy'); // $booking->date->format($date_format);
 					$time_str = $booking->date->format($time_format);
 					$period_name = html_escape($booking->period->name);
 					$room_name = html_escape($booking->room->name);

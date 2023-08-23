@@ -1,7 +1,7 @@
 <dl>
-  <dt>User details</dt>
-  <dd>Make changes to your user details, such as your display name and email address here.</dd>
+  <dt><?php echo $this->lang->line('Userdetails'); ?></dt>
+  <dd><?php echo $this->lang->line('phraseEditProfile1'); ?></dd>
 
-  <dt>Change password</dt>
-  <dd>To change your password, please enter your new password <i>twice</i> in the <span>password</span> fields.</dd>
+  <dt><?php echo $this->lang->line('Changepassword'); ?></dt>
+  <dd><?php echo $this->lang->line('phraseEditPswd1'); ?></dd>
 </dl>

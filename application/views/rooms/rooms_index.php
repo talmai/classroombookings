@@ -2,9 +2,13 @@
 
 echo $this->session->flashdata('saved');
 
+if ( !($this->lang->line('Location')) ) {
+	$this->lang->load('custom');
+}
+
 echo iconbar(array(
-	array('rooms/add', 'Add Room', 'add.png'),
-));
+	array('rooms/add', $this->lang->line('AddRoom'), 'add.png'),
+)); 
 
 $sort_cols = ["Name", "Location", "Teacher", "Notes", "Photo", "None"];
 
@@ -14,10 +18,10 @@ $sort_cols = ["Name", "Location", "Teacher", "Notes", "Photo", "None"];
 	<col /><col /><col />
 	<thead>
 	<tr class="heading">
-		<td class="h" title="Name">Name</td>
-		<td class="h" title="Location">Location</td>
-		<td class="h" title="Teacher">Teacher</td>
-		<td class="h" title="Photo">Photo</td>
+		<td class="h" title="Name"><?= $this->lang->line('Name') ?></td>
+		<td class="h" title="Location"><?= $this->lang->line('Location') ?></td>
+		<td class="h" title="Teacher"><?= $this->lang->line('Teacher') ?></td>
+		<td class="h" title="Photo"><?= $this->lang->line('Photo') ?></td>
 		<td class="n" title="X"></td>
 	</tr>
 	</thead>
@@ -43,8 +47,8 @@ $sort_cols = ["Name", "Location", "Teacher", "Notes", "Photo", "None"];
 			if ($room->photo != '' && is_file(FCPATH . $photo_path)) {
 				$url = site_url("rooms/photo/{$room->room_id}");
 				$icon_src = base_url('assets/images/ui/picture.png');
-				$icon_el = "<img src='{$icon_src}' width='16' height='16' alt='View Photo'>";
-				echo "<a href='{$url}' up-history='false' up-layer='new drawer' up-target='.room-photo' title='View Photo'>{$icon_el}</a>";
+				$icon_el = "<img src='{$icon_src}' width='16' height='16' alt='".$this->lang->line('ViewPhoto')."'>";
+				echo "<a href='{$url}' up-history='false' up-layer='new drawer' up-target='.room-photo' title='".$this->lang->line('ViewPhoto')."'>{$icon_el}</a>";
 			}
 			?>
 		</td>
@@ -57,7 +61,7 @@ $sort_cols = ["Name", "Location", "Teacher", "Notes", "Photo", "None"];
 	</tr>
 	<?php $i++; }
 	} else {
-		echo '<td colspan="5" align="center" style="padding:16px 0">No rooms exist!</td>';
+		echo '<td colspan="5" align="center" style="padding:16px 0">'.$this->lang->line('msgNoroomsexist').'</td>';
 	}
 	?>
 	</tbody>

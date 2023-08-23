@@ -7,10 +7,16 @@ $css = $calendar->get_css();
 echo "<style type='text/css'>{$css}</style>";
 
 $dateFormat = setting('date_format_long', 'crbs');
-$start = $session->date_start ? $session->date_start->format($dateFormat) : '';
-$end = $session->date_end ? $session->date_end->format($dateFormat) : '';
-echo "<p><strong>Start date: </strong>{$start}</p>";
-echo "<p><strong>End date:</strong> {$end}</p>";
+if($this->lang->get_idioma()=="english"){
+	$start = $session->date_start ? $session->date_start->format($dateFormat) : '';
+	$end = $session->date_end ? $session->date_end->format($dateFormat) : ''; // Sunday 1st January 2023
+}else{
+	$start = $session->date_start ? $this->lang->diaTraduzido( $session->date_start, 'EEEE, d MMMM yyyy' ) : '';
+	$end = $session->date_end ? $this->lang->diaTraduzido( $session->date_end, 'EEEE, d MMMM yyyy' ) : '';
+	// Domingo 1 Janeiro 2023 = 'EEEE d MMMM YYYY'
+}
+echo "<p><strong>Data inicial: </strong>{$start}</p>";
+echo "<p><strong>Data final:</strong> {$end}</p>";
 
 if ( ! empty($weeks)) {
 	$this->load->view('sessions/view_apply_week', [
@@ -19,7 +25,7 @@ if ( ! empty($weeks)) {
 	]);
 }
 
-echo "<br><p>Click on the dates in each calendar to toggle the Timetable Week for that week.</p><br>";
+echo "<br><p>Clique nas datas em cada calendário para alternar o Horário Semanal daquela semana.</p><br>";
 
 echo form_open(current_url(), [], ['session_id' => $session->session_id]);
 

@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class School extends MY_Controller
 {
@@ -23,8 +23,9 @@ class School extends MY_Controller
 	 */
 	public function index()
 	{
+		$this->lang->load('custom');
 		$this->data['settings'] = $this->settings_model->get_all('crbs');
-		$this->data['title'] = 'School Information';
+		$this->data['title'] = $this->lang->line('SchoolInformation');
 		$this->data['showtitle'] = $this->data['title'];
 
 		if ($this->input->post()) {
@@ -49,8 +50,8 @@ class School extends MY_Controller
 		$this->load->library('image_lib');
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('schoolname', 'School name', 'required|max_length[255]');
-		$this->form_validation->set_rules('website', 'Website address', 'prep_url|valid_url|max_length[255]');
+		$this->form_validation->set_rules('schoolname', $this->lang->line('SchoolName'), 'required|max_length[255]');
+		$this->form_validation->set_rules('website', $this->lang->line('Websiteaddress'), 'prep_url|valid_url|max_length[255]');
 		$this->form_validation->set_rules('userfile', 'Logo', '');
 
 		if ($this->form_validation->run() == FALSE) {
@@ -75,7 +76,7 @@ class School extends MY_Controller
 
 				// Not uploaded
 				$error = $this->upload->display_errors('','');
-				if ($error != 'You did not select a file to upload') {
+				if ($error != $this->lang->line('errorNoFile')) {
 					$this->session->set_flashdata('image_error', $error);
 					return FALSE;
 				}

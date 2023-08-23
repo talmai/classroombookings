@@ -9,7 +9,8 @@ class SessionException extends \RuntimeException
 
 	public static function notSelected()
 	{
-		return new static("No active Session found.");
+		// $lang['no_active_session']); // ("No active Session found.");
+		return new static("Nenhuma sessão ativa encontrada."); 
 	}
 
 

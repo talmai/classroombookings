@@ -2,11 +2,14 @@
 
 echo $this->session->flashdata('saved');
 
-echo '<h2>School setup</h2>';
+echo '<h2>'. $this->lang->line('institutionsetup') . '</h2>';
 dotable($school_menu);
 
-echo '<h2>Management</h2>';
+echo '<h2>'. $this->lang->line('management') . '</h2>';
 dotable($manage_menu);
+
+echo '<h2>'. $this->lang->line('reports') . '</h2>';
+dotable($reports_menu);
 
 
 function dotable($array){

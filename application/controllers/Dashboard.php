@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Dashboard extends MY_Controller
 {
@@ -9,6 +9,10 @@ class Dashboard extends MY_Controller
 	{
 		parent::__construct();
 		$this->require_logged_in(FALSE);
+		
+		if(!$this->lang->line('Dashboard')){
+			$this->lang->load('custom');
+		}
 	}
 
 
@@ -35,7 +39,7 @@ class Dashboard extends MY_Controller
 		// Get totals
 		$this->data['totals'] = $this->bookings_model->TotalNum($user_id);
 
-		$this->data['title'] = 'Dashboard';
+		$this->data['title'] = $this->lang->line('Dashboard');
 		$this->data['showtitle'] = '';	//$this->data['title'];
 
 		$this->data['body'] = '';

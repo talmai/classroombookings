@@ -11,11 +11,11 @@
 	<col /><col /><col /><col />
 	<thead>
 		<tr class="heading">
-			<td class="h" width="20%" title="Name">Name</td>
-			<td class="h" width="10%" title="Current?">Current?</td>
-			<td class="h" width="10%" title="Available?">Available?</td>
-			<td class="h" width="25%" title="Start date">Start date</td>
-			<td class="h" width="25%" title="End date">End date</td>
+			<td class="h" width="20%" title="Name"><?php echo $this->lang->line('Name'); ?></td>
+			<td class="h" width="10%" title="Current?"><?php echo $this->lang->line('Current'); ?>?</td>
+			<td class="h" width="10%" title="Available?"><?php echo $this->lang->line('Available'); ?>?</td>
+			<td class="h" width="25%" title="Start date"><?php echo $this->lang->line('Startdate'); ?></td>
+			<td class="h" width="25%" title="End date"><?php echo $this->lang->line('Enddate'); ?></td>
 			<td class="h" width="10%" title="Actions"></td>
 		</tr>
 	</thead>
@@ -24,7 +24,7 @@
 
 	<tbody>
 		<tr>
-			<td colspan="6" align="center" style="padding:16px 0; color: #666">No sessions.</td>
+			<td colspan="6" align="center" style="padding:16px 0; color: #666"><?php echo $this->lang->line('NoSessions'); ?>.</td>
 		</tr>
 	</tbody>
 
@@ -57,13 +57,19 @@
 			}
 			echo "<td>{$img}</td>";
 
-			$start = $session->date_start ? $session->date_start->format($dateFormat) : '';
+			if($this->lang->get_idioma()=="english"){
+				$start = $session->date_start ? $session->date_start->format($dateFormat) : '';
+				$end = $session->date_end ? $session->date_end->format($dateFormat) : ''; // Sunday 1st January 2023
+			}else{
+				$start = $session->date_start ? $this->lang->diaTraduzido( $session->date_start, 'EEEE, d MMMM yyyy' ) : '';
+				$end = $session->date_end ? $this->lang->diaTraduzido( $session->date_end, 'EEEE, d MMMM yyyy' ) : '';
+				// Domingo 1 Janeiro 2023 = 'EEEE d MMMM YYYY'
+			}
+			
 			echo "<td>{$start}</td>";
-
-			$end = $session->date_end ? $session->date_end->format($dateFormat) : '';
 			echo "<td>{$end}</td>";
-
 			echo "<td>";
+			
 			$actions['edit'] = 'sessions/edit/'.$session->session_id;
 			$actions['delete'] = 'sessions/delete/'.$session->session_id;
 			$this->load->view('partials/editdelete', $actions);

@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 
 class Profile extends MY_Controller
@@ -11,9 +11,11 @@ class Profile extends MY_Controller
 		parent::__construct();
 
 		$this->require_logged_in();
-
+		
 		$this->load->model('crud_model');
 		$this->load->model('users_model');
+		
+		$this->lang->load('profile');
 	}
 
 
@@ -35,7 +37,7 @@ class Profile extends MY_Controller
 			),
 		);
 
-		$this->data['title'] = 'Edit my details';
+		$this->data['title'] = $this->lang->line('Userdetails');
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('columns', $columns, TRUE);
 
@@ -49,13 +51,13 @@ class Profile extends MY_Controller
 		$user_id = $this->userauth->user->user_id;
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('password1', 'Password', 'min_length[6]');
-		$this->form_validation->set_rules('password2', 'Password (confirm)', 'min_length[6]|matches[password1]');
-		$this->form_validation->set_rules('email', 'Email address', 'max_length[255]|valid_email');
-		$this->form_validation->set_rules('firstname', 'First name', 'max_length[20]');
-		$this->form_validation->set_rules('lastname', 'Last name', 'max_length[20]');
-		$this->form_validation->set_rules('displayname', 'Display name', 'max_length[20]');
-		$this->form_validation->set_rules('extension', 'Extension', 'max_length[10]');
+		$this->form_validation->set_rules('password1', $this->lang->line('Password'), 'min_length[6]');
+		$this->form_validation->set_rules('password2', $this->lang->line('Password').' ('.$this->lang->line('again').')', 'min_length[6]|matches[password1]');
+		$this->form_validation->set_rules('email', $this->lang->line('Email'), 'max_length[255]|valid_email');
+		$this->form_validation->set_rules('firstname', $this->lang->line('Firstname'), 'max_length[20]');
+		$this->form_validation->set_rules('lastname', $this->lang->line('Lastname'), 'max_length[20]');
+		$this->form_validation->set_rules('displayname', $this->lang->line('Displayname'), 'max_length[20]');
+		$this->form_validation->set_rules('extension', $this->lang->line('Extension'), 'max_length[10]');
 
 		if ($this->form_validation->run() == FALSE) {
 	  		// Validation failed
@@ -81,9 +83,9 @@ class Profile extends MY_Controller
 
 		// Now call database to update user and load appropriate message for return value
 		if ( ! $this->crud_model->Edit('users', 'user_id', $user_id, $data)) {
-			$flashmsg = msgbox('error', 'A database error occured while updating your details.');
+			$flashmsg = msgbox('error', $this->lang->line('ErrorSave1'));
 		} else {
-			$flashmsg = msgbox('info', 'Your details have been successfully updated.');
+			$flashmsg = msgbox('info', $this->lang->line('SaveSuccess1'));
 		}
 
 		// Go back to index

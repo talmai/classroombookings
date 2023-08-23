@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Install extends MY_Controller
 {
@@ -180,6 +180,7 @@ class Install extends MY_Controller
 						$_SESSION['data'] = array_merge($_SESSION['data'], $data);
 						$_SESSION['install_step'] = 'info';
 						$_SESSION['step_config'] = TRUE;
+						log_message("error", "Proceeding to info...".$_SESSION['requirements']);
 						redirect('install/info');
 					}
 				}

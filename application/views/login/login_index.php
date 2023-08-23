@@ -12,10 +12,10 @@ echo form_open('login/submit', array('id'=>'login','class'=>'cssform'), array('p
 ?>
 
 
-<fieldset style="width:336px;"><legend accesskey="L" tabindex="<?php echo tab_index() ?>">Log in</legend>
+<fieldset style="width:336px;"><legend accesskey="L" tabindex="<?php echo tab_index() ?>"><?php echo $this->data['title'] ?></legend>
 
 	<p>
-	  <label for="username" class="required">Username</label>
+	  <label for="username" class="required"><?php echo $this->lang->line('username') ?></label>
 	  <?php
 		$value = set_value('username', '', FALSE);
 		echo form_input(array(
@@ -31,7 +31,7 @@ echo form_open('login/submit', array('id'=>'login','class'=>'cssform'), array('p
 
 
 	<p>
-	  <label for="password" class="required">Password</label>
+	  <label for="password" class="required"><?php echo $this->lang->line('password') ?></label>
 	  <?php
 		echo form_password(array(
 			'name' => 'password',
@@ -44,7 +44,6 @@ echo form_open('login/submit', array('id'=>'login','class'=>'cssform'), array('p
 	</p>
 
 </fieldset>
-
 
 <?php
 

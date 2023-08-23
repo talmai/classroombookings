@@ -2,7 +2,7 @@
 
 namespace app\components\bookings\agent;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 
 use app\components\bookings\exceptions\AgentException;
@@ -41,6 +41,10 @@ class SingleAgent extends BaseAgent
 	public function load()
 	{
 		$this->view = 'bookings/create/single';
+		
+		if ( !($this->CI->lang->line('msgConfirmBooking')) ) {
+			$this->CI->lang->load('custom');
+		}
 
 		$period_id = $this->CI->input->post_get('period_id');
 		if (strlen($period_id)) $this->period = $this->CI->periods_model->Get($period_id);
@@ -70,6 +74,7 @@ class SingleAgent extends BaseAgent
 
 		// List of dates that a recurring booking can begin/end on.
 		$this->recurring_dates = $this->CI->dates_model->get_recurring_dates($this->session->session_id, $this->date_info->week_id, $this->date_info->weekday);
+		
 	}
 
 
@@ -133,17 +138,17 @@ class SingleAgent extends BaseAgent
 	private function create_single_booking()
 	{
 		$rules = [
-			['field' => 'date', 'label' => 'Date', 'rules' => 'required|valid_date'],
-			['field' => 'period_id', 'label' => 'Period', 'rules' => 'required|integer'],
-			['field' => 'room_id', 'label' => 'Room', 'rules' => 'required|integer'],
-			['field' => 'notes', 'label' => 'Notes', 'rules' => 'max_length[255]'],
+			['field' => 'date', 'label' => $this->CI->lang->line('Date'), 'rules' => 'required|valid_date'],
+			['field' => 'period_id', 'label' => $this->CI->lang->line('Period'), 'rules' => 'required|integer'],
+			['field' => 'room_id', 'label' => $this->CI->lang->line('Room'), 'rules' => 'required|integer'],
+			['field' => 'notes', 'label' => $this->CI->lang->line('Notes'), 'rules' => 'max_length[255]'],
 		];
 
 		$this->CI->load->library('form_validation');
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() == FALSE) {
-			$this->message = 'The form contained some invalid values. Please check and try again.';
+			$this->message = $this->CI->lang->line('ErrorInvalidValues');
 			return FALSE;
 		}
 
@@ -168,7 +173,7 @@ class SingleAgent extends BaseAgent
 
 		if ($booking_id) {
 			$this->success = TRUE;
-			$this->message = 'The booking has been created successfully.';
+			$this->message = $this->CI->lang->line('msgConfirmBooking');
 			return TRUE;
 		}
 
@@ -176,7 +181,7 @@ class SingleAgent extends BaseAgent
 
 		$this->message = ($err)
 			? $err
-			: 'Could not create booking.';
+			: $this->CI->lang->line('ErrorCreatingBooking');
 
 		return FALSE;
 	}
@@ -192,7 +197,7 @@ class SingleAgent extends BaseAgent
 
 		if ($this->CI->input->post('recurring_start') == 'session') {
 
-			$rules[] = ['field' => 'recurring_start', 'label' => 'Start date', 'rules' => 'required'];
+			$rules[] = ['field' => 'recurring_start', 'label' => $this->CI->lang->line('Startdate'), 'rules' => 'required'];
 			$recurring_start = false;
 
 			foreach ($this->recurring_dates as $row) {
@@ -204,13 +209,13 @@ class SingleAgent extends BaseAgent
 			}
 
 		} else {
-			$rules[] = ['field' => 'recurring_start', 'label' => 'Start date', 'rules' => 'required|valid_date'];
+			$rules[] = ['field' => 'recurring_start', 'label' => $this->CI->lang->line('Startdate'), 'rules' => 'required|valid_date'];
 			$recurring_start = $this->CI->input->post('recurring_start');
 		}
 
 		if ($this->CI->input->post('recurring_end') == 'session') {
 
-			$rules[] = ['field' => 'recurring_end', 'label' => 'End date', 'rules' => 'required'];
+			$rules[] = ['field' => 'recurring_end', 'label' => $this->CI->lang->line('Enddate'), 'rules' => 'required'];
 			$recurring_end = FALSE;
 
 			foreach (array_reverse($this->recurring_dates) as $row) {
@@ -222,7 +227,7 @@ class SingleAgent extends BaseAgent
 			}
 
 		} else {
-			$rules[] = ['field' => 'recurring_end', 'label' => 'End date', 'rules' => 'required|valid_date'];
+			$rules[] = ['field' => 'recurring_end', 'label' => $this->CI->lang->line('Enddate'), 'rules' => 'required|valid_date'];
 			$recurring_end = $this->CI->input->post('recurring_end');
 		}
 
@@ -233,7 +238,7 @@ class SingleAgent extends BaseAgent
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() == FALSE) {
-			$this->message = 'The form contained some invalid values. Please check and try again.';
+			$this->message = $this->CI->lang->line('ErrorInvalidValues');
 			return FALSE;
 		}
 
@@ -268,12 +273,12 @@ class SingleAgent extends BaseAgent
 			$actions = [];
 
 			if (array_key_exists($key, $existing_bookings)) {
-				$actions['do_not_book'] = 'Keep existing booking';
-				$actions['replace'] = 'Replace existing booking';
+				$actions['do_not_book'] = $this->CI->lang->line('Keepexistingbooking');
+				$actions['replace'] = $this->CI->lang->line('Replaceexistingbooking');
 				$slots[$key]['booking'] = $existing_bookings[$key];
 			} else {
-				$actions['book'] = 'Book';
-				$actions['do_not_book'] = 'Do not book';
+				$actions['book'] = $this->CI->lang->line('Book');
+				$actions['do_not_book'] = $this->CI->lang->line('Donotbook');
 			}
 
 			$slots[$key]['actions'] = $actions;
@@ -282,7 +287,7 @@ class SingleAgent extends BaseAgent
 
 		$this->view_data['slots'] = $slots;
 
-		$this->title = 'Preview recurring bookings';
+		$this->title = $this->CI->lang->line('Previewrecurbooks');
 
 		$this->view = 'bookings/create/single_recurring_preview';
 	}
@@ -297,7 +302,7 @@ class SingleAgent extends BaseAgent
 		$dates = $this->CI->input->post('dates');
 
 		if (empty($dates)) {
-			$this->message = 'No dates selected.';
+			$this->message = $this->CI->lang->line('Nodatesselected');
 			return FALSE;
 		}
 
@@ -324,12 +329,12 @@ class SingleAgent extends BaseAgent
 		$repeat_id = $this->CI->bookings_repeat_model->create($repeat_data);
 
 		if ( ! $repeat_id) {
-			$this->message = 'Could not create recurring booking.';
+			$this->message = $this->CI->lang->line('ErrorCreatingRecurBooking');
 			return FALSE;
 		}
 
 		$this->success = TRUE;
-		$this->message = 'The bookings have been created successfully.';
+		$this->message = $this->CI->lang->line('msgConfirmBooking');
 		return TRUE;
 	}
 

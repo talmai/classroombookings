@@ -2,7 +2,7 @@
 
 namespace app\components\bookings;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 
 use \DateTime;
@@ -19,14 +19,11 @@ use app\components\bookings\exceptions\DateException;
 class Grid
 {
 
-
 	// CI instance
 	private $CI;
 
-
 	// Context instance
 	private $context;
-
 
 
 	public function __construct(Context $context)
@@ -55,6 +52,8 @@ class Grid
 	{
 		$controls = $this->controls->render();
 		$header = $this->header->render();
+		
+		$this->CI->lang->load('bookings');
 
 		$body = $this->render_body();
 		$footer = $this->render_footer();
@@ -118,11 +117,11 @@ class Grid
 			'checked' => false,
 			'up-switch' => '.multi-select-content',
 		]);
-		$input_label = form_label($input . 'Enable multiple selection', 'multi_select', ['class' => 'ni', 'style' => 'display: inline-block;margin-bottom:8px']);
+		$input_label = form_label($input . $this->CI->lang->line('Enablemulsel'), 'multi_select', ['class' => 'ni', 'style' => 'display: inline-block;margin-bottom:8px']);
 
 		$check_block = "<div class='block b-50' style='text-align:right'>{$input_label}</div>";
 
-		$submit_button = "<button type='submit' style='margin-left:32px' class='multi-select-content'>Create bookings...</button>";
+		$submit_button = "<button type='submit' style='margin-left:32px' class='multi-select-content'>".$this->CI->lang->line('')."...</button>";
 		$button_block = "<div class='block b-50'>{$submit_button}</div>";
 
 		return "<div class='cssform block-group' style='margin-top:32px;'>{$check_block}{$button_block}</div>";
@@ -137,18 +136,18 @@ class Grid
 	{
 		$cells = [];
 
-		$legend = lang('bookings_legend_legend');
+		$legend = lang('bookingslegendlegend');
 		$cells[] = "<td width='25%' align='right' valign='middle'><strong>{$legend}:</strong></td>";
 
-		$label = lang('bookings_legend_free');
+		$label = lang('bookingslegendfree');
 		$class = 'bookings-grid-slot booking-status-available';
 		$cells[] = "<td class='{$class}' width='25%' align='center'><span class='bookings-grid-button'>{$label}</div></td>";
 
-		$label = lang('bookings_legend_static');
+		$label = lang('bookingslegendstatic');
 		$class = 'bookings-grid-slot booking-status-booked booking-status-booked-recurring';
 		$cells[] = "<td class='{$class}' width='25%' align='center'><span class='bookings-grid-button'>{$label}</div></td>";
 
-		$label = lang('bookings_legend_staff');
+		$label = lang('bookingslegendstaff');
 		$class = 'bookings-grid-slot booking-status-booked booking-status-booked-single';
 		$cells[] = "<td class='{$class}' width='25%' align='center'><span class='bookings-grid-button'>{$label}</div></td>";
 
@@ -158,7 +157,5 @@ class Grid
 
 		return $table;
 	}
-
-
 
 }

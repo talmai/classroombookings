@@ -1,0 +1,41 @@
+<?php
+
+$lang['AccessControl'] = 'Controle de acesso';
+$lang['AddField'] = 'Adicionar campo';
+$lang['AddRoom'] = 'Adicionar sala';
+$lang['AddRooms'] = 'Adicionar salas';
+$lang['Choosedate'] = 'Escolha uma data';
+$lang['Currentphoto'] = 'Foto atual';
+$lang['CustomFields'] = 'Campos personalizados';
+$lang['DeleteField'] = 'Excluir campo';
+$lang['DeletePhoto'] = 'Excluir foto';
+$lang['DeleteRoom'] = 'Excluir sala';
+$lang['EditField'] = 'Editar campo';
+$lang['EditRoom'] = 'Editar sala/espaço';
+$lang['erroCouldnBeFound'] = 'A sala/espaço solicitado não foi encontrado.'; // The requested room could not be found.
+$lang['erroPhotoDoesntEx'] = 'Arquivo de foto não existe.'; // 'Photo file does not exist.'
+$lang['Fields'] = 'Campos';
+$lang['Fileupload'] = 'Enviar arquivo';
+$lang['hasbeenadded'] = 'foi adicionado'; //' field has been added.';
+$lang['hasbeenupdated'] = 'foi atualizado';
+$lang['Maximumfilesize'] = 'Tamanho máximo do arquivo';
+$lang['msgAllowRoomBookings'] = 'Marque esta caixa para permitir reservas para esta sala/espaço';
+$lang['msgBoxRemovePhoto'] = 'Marque esta caixa para <span>remover a foto atual</span> sem adicionar uma nova.'; // Tick this box to <span>remove the current photo</span> without adding a new one.
+$lang['msgNoroomsexist'] = 'Não existe sala/espaço!'; // No rooms exist!
+$lang['msgPhoto'] = 'Adicione uma foto da sala que os usuários poderão visualizar.'; // Add a photo of the room which users will be able to view.
+$lang['msgRoomInformation'] = 'O único campo obrigatório para uma sala é o campo <span>nome</span>. Todos os outros campos existem para ajudar você e outros usuários.'; // The only required field for a room is the <span>name</span> field. All of the other fields are there to help yourself and other users.
+$lang['msgUploadingPhoto'] = 'Carregar uma nova foto <span>substituirá</span> a atual.'; // Uploading a new photo will <span>replace</span> the current one.
+$lang['Nodetailsavailable'] = 'Sem detalhes disponíveis'; //No details available
+$lang['None'] = 'Nenhum(a)';
+$lang['Nophotoavailable'] = 'Nenhuma foto disponível'; // No photo available
+$lang['Noroomtoshow'] = 'Não há espaço para mostrar'; // No room to show
+$lang['Photo'] = 'Foto';
+$lang['Roomdetails'] = 'Detalhes da sala/espaço';
+$lang['RoomInformation'] = 'Informações da sala/espaço';
+$lang['Room'] = 'Sala/espaço';
+$lang['Rooms'] = 'Salas/espaços';
+$lang['Teacher'] = 'Responsável';
+$lang['textConfirmDeletion'] = 'Se você excluir este quarto, <strong>todas as reservas</strong> para este quarto também serão <strong>excluídas permanentemente</strong>.';//'If you delete this room, <strong>all bookings</strong> for this room will be <strong>permanently deleted</strong> as well.';
+$lang['Thefield'] = 'O campo';
+$lang['ViewPhoto'] = 'Ver foto'; // View Photo
+

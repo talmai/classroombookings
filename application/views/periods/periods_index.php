@@ -3,13 +3,11 @@
 echo $this->session->flashdata('saved');
 
 $iconbar = iconbar(array(
-	array('periods/add', 'Add Period', 'add.png'),
+	array('periods/add', $this->lang->line('AddPeriod'), 'add.png'),
 ));
-
 echo $iconbar;
 
 $sort_cols = ["None", "Name", "TimeStart", "TimeEnd", "Duration", "Days", "None"];
-
 ?>
 
 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="zebra-table sort-table" id="jsst-periods" up-data='<?= json_encode($sort_cols) ?>'>
@@ -17,11 +15,11 @@ $sort_cols = ["None", "Name", "TimeStart", "TimeEnd", "Duration", "Days", "None"
 	<thead>
 	<tr class="heading">
 		<td class="h" title="N">&nbsp;</td>
-		<td class="h" title="Name">Name</td>
-		<td class="h" title="TimeStart">Start time</td>
-		<td class="h" title="TimeEnd">End Time</td>
-		<td class="h" title="Duration">Duration</td>
-		<td class="h" title="Days">Days of week</td>
+		<td class="h" title="Name"><?= $this->lang->line('Name') ?></td>
+		<td class="h" title="TimeStart"><?= $this->lang->line('Starttime') ?></td>
+		<td class="h" title="TimeEnd"><?= $this->lang->line('Endtime') ?></td>
+		<td class="h" title="Duration"><?= $this->lang->line('Duration') ?></td>
+		<td class="h" title="Days"><?= $this->lang->line('Daysofweek') ?></td>
 		<td class="n" title="X"></td>
 	</tr>
 	</thead>
@@ -54,9 +52,11 @@ $sort_cols = ["None", "Name", "TimeStart", "TimeEnd", "Duration", "Days", "None"
 		<td><?php echo strftime('%H:%M', $time_end) ?></td>
 		<td><?php echo timespan($time_start, $time_end) ?></td>
 		<td><?php
+		
 		foreach ($days_list as $day_num => $day_name) {
 			$key = "day_{$day_num}";
-			$letter = "{$day_name[0]}{$day_name[1]}";
+			$letter = $this->lang->get_idioma()=='portuguese' ? 
+					  $this->lang->diaDaSemana($day_name,2) : "{$day_name[0]}{$day_name[1]}";
 			if ($period->{$key} == '1') {
 				echo "$letter ";
 			} else {
@@ -73,7 +73,7 @@ $sort_cols = ["None", "Name", "TimeStart", "TimeEnd", "Duration", "Days", "None"
 	</tr>
 	<?php $i++; }
 	} else {
-		echo '<td colspan="7" align="center" style="padding:16px 0">No periods exist!</td>';
+		echo '<td colspan="7" align="center" style="padding:16px 0">'.$this->lang->line('noperiods').'</td>';
 	}
 	?>
 	</tbody>

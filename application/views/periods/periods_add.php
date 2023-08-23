@@ -4,16 +4,21 @@ if (isset($period) && is_object($period)) {
 	$period_id = set_value('period_id', $period->period_id);
 }
 
+if ( !($this->lang->line('Perioddetails')) ) {
+	$this->lang->load('custom');
+}
+
+
 echo form_open('periods/save', array('class' => 'cssform', 'id' => 'schoolday_add'), array('period_id' => $period_id) );
 
 ?>
 
 <fieldset>
 
-	<legend accesskey="R" tabindex="<?php echo tab_index() ?>">Period details</legend>
+	<legend accesskey="R" tabindex="<?php echo tab_index() ?>"><?= $this->lang->line('Perioddetails') ?></legend>
 
 	<p>
-		<label for="name" class="required">Name</label>
+		<label for="name" class="required"><?= $this->lang->line('Name') ?></label>
 		<?php
 		$field = 'name';
 		$value = set_value($field, isset($period) ? $period->name : '', FALSE);
@@ -30,7 +35,7 @@ echo form_open('periods/save', array('class' => 'cssform', 'id' => 'schoolday_ad
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="time_start" class="required">Start time</label>
+		<label for="time_start" class="required"><?= $this->lang->line('Starttime') ?></label>
 		<?php
 		$field = 'time_start';
 		$value = set_value($field, isset($period) ? $period->time_start : '', FALSE);
@@ -49,7 +54,7 @@ echo form_open('periods/save', array('class' => 'cssform', 'id' => 'schoolday_ad
 
 
 	<p>
-		<label for="time_end" class="required">End time</label>
+		<label for="time_end" class="required"><?= $this->lang->line('Endtime') ?></label>
 		<?php
 		$field = 'time_end';
 		$value = set_value($field, isset($period) ? $period->time_end : '', FALSE);
@@ -67,7 +72,7 @@ echo form_open('periods/save', array('class' => 'cssform', 'id' => 'schoolday_ad
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="days" class="required">Days of the week</label>
+		<label for="days" class="required"><?= $this->lang->line('Daysofweek') ?></label>
 		<?php
 		$default_value = array();
 
@@ -87,7 +92,7 @@ echo form_open('periods/save', array('class' => 'cssform', 'id' => 'schoolday_ad
 	</p>
 
 	<p>
-		<label for="bookable">Can be booked</label>
+		<label for="bookable"><?= $this->lang->line('Canbebooked') ?></label>
 		<?php
 		$field = 'bookable';
 		echo form_hidden($field, '0');
@@ -99,7 +104,7 @@ echo form_open('periods/save', array('class' => 'cssform', 'id' => 'schoolday_ad
 			'checked' => set_value($field, isset($period) ? $period->bookable : 1, TRUE),
 		));
 		?>
-		<p class="hint">Tick this box to allow bookings for this period</p>
+		<p class="hint"><?= $this->lang->line('msgAllowBookings') ?></p>
 	</p>
 
 </fieldset>

@@ -1,10 +1,14 @@
 <?php
 
+if ( !($this->lang->line('WeekDates')) ) {
+	$this->lang->load('weeks'); 
+}
+
 $messages = $this->session->flashdata('saved');
 echo "<div class='messages'>{$messages}</div>";
 
 echo iconbar([
-	array('weeks/add', 'Add Week', 'add.png'),
+	array('weeks/add', $this->lang->line('AddWeek'), 'add.png'),
 ]);
 
 $sort_cols = ["Name", "Colour", "None"];
@@ -25,7 +29,7 @@ $sort_cols = ["Name", "Colour", "None"];
 	<thead>
 		<tr class="heading">
 			<td class="h" width="5%" title="Colour"></td>
-			<td class="h" width="85%" title="Name">Name</td>
+			<td class="h" width="85%" title="Name"><?= $this->lang->line('Name') ?></td>
 			<!-- <td class="h" title="Colour">Colour</td> -->
 			<td class="n" width="10%" title="X">&nbsp;</td>
 		</tr>
@@ -35,7 +39,7 @@ $sort_cols = ["Name", "Colour", "None"];
 
 	<tbody>
 		<tr>
-			<td colspan="4" align="center" style="padding:16px 0; color: #666">No weeks.</td>
+			<td colspan="4" align="center" style="padding:16px 0; color: #666"><?= $this->lang->line('NoWeeks') ?>.</td>
 		</tr>
 	</tbody>
 

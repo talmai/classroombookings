@@ -2,12 +2,18 @@
 var datePickerDivID = "datepicker";
 var iFrameDivID = "datepickeriframe";
 
-var dayArrayShort = new Array('Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa');
+/*var dayArrayShort = new Array('Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa');
 var dayArrayMed = new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
 var dayArrayLong = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 var monthArrayShort = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
 var monthArrayMed = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec');
-var monthArrayLong = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+var monthArrayLong = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');*/
+var dayArrayShort = new Array('Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sa');
+var dayArrayMed = new Array('Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb');
+var dayArrayLong = new Array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
+var monthArrayShort = new Array('Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez');
+var monthArrayMed = new Array('Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez');
+var monthArrayLong = new Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
 
 // these variables define the date formatting we're expecting and outputting.
 // If you want to use a different format by default, change the defaultDateSeparator
@@ -171,10 +177,10 @@ function refreshDatePicker(dateFieldName, year, month, day)
 
   // add a button to allow the user to easily return to today, or close the calendar
   var today = new Date();
-  var todayString = "Today is " + dayArrayMed[today.getDay()] + ", " + monthArrayMed[ today.getMonth()] + " " + today.getDate();
+  var todayString = "Hoje é dia " + dayArrayMed[today.getDay()] + ", " + monthArrayMed[ today.getMonth()] + " " + today.getDate();
   html += TR_todaybutton + TD_todaybutton;
-  html += "<button class='dpTodayButton' onClick='refreshDatePicker(\"" + dateFieldName + "\");'>this month</button> ";
-  html += "<button class='dpTodayButton' onClick='updateDateField(\"" + dateFieldName + "\");'>close</button>";
+  html += "<button class='dpTodayButton' onClick='refreshDatePicker(\"" + dateFieldName + "\");'>este mês</button> ";
+  html += "<button class='dpTodayButton' onClick='updateDateField(\"" + dateFieldName + "\");'>fechar</button>";
   html += xTD + xTR;
 
   // and finally, close the table
@@ -298,7 +304,7 @@ function datePickerClosed(dateField)
   if (dateField.name == "StartDate") {
     if (dateObj < today) {
       // if the date is before today, alert the user and display the datepicker again
-      alert("Please enter a date that is today or later");
+      alert("Por favor escolha o dia de hoje ou posterior");
       dateField.value = "";
       document.getElementById(datePickerDivID).style.visibility = "visible";
       adjustiFrame();

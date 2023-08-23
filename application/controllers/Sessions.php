@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 use app\components\Calendar;
 
@@ -19,7 +19,7 @@ class Sessions extends MY_Controller
 		$this->load->model('dates_model');
 		$this->load->helper('date');
 
-		$this->data['showtitle'] = 'Sessions';
+		$this->data['showtitle'] = $this->lang->line('Sessions');//'Sessions';
 
 	}
 
@@ -27,12 +27,12 @@ class Sessions extends MY_Controller
 	private function get_icons($session = NULL)
 	{
 		$items = [
-			['sessions', 'Sessions', 'calendar_view_month.png'],
+			['sessions', $this->lang->line('Sessions'), 'calendar_view_month.png'],
 		];
 
 		if ($session) {
 			$items[] = ['sessions/view/' . $session->session_id, $session->name, 'calendar_view_day.png'];
-			$items[] = ['holidays/session/' . $session->session_id, 'Holidays', 'school_manage_holidays.png'];
+			$items[] = ['holidays/session/' . $session->session_id, $this->lang->line('Holidays'), 'school_manage_holidays.png'];
 		}
 
 		return $items;
@@ -45,10 +45,14 @@ class Sessions extends MY_Controller
 	 */
 	public function index()
 	{
+		if(!$this->lang->line('Sessions')){
+			$this->lang->load('custom');
+		}
+		
 		$this->data['active'] = $this->sessions_model->get_all_active();
 		$this->data['past'] = $this->sessions_model->get_all_past();
 
-		$this->data['title'] = 'Sessions';
+		$this->data['title'] = $this->lang->line('Sessions');
 
 		$body = $this->load->view('sessions/index', $this->data, TRUE);
 
@@ -88,14 +92,14 @@ class Sessions extends MY_Controller
 		$this->data['weeks'] = $weeks;
 		$this->data['calendar'] = $calendar;
 		$this->data['session'] = $session;
-		$this->data['title'] = $this->data['showtitle'] = 'Session: ' . $session->name;
+		$this->data['title'] = $this->data['showtitle'] = $this->lang->line('Session').': ' . $session->name;
 
 		$icons = iconbar($this->get_icons($session), 'sessions/view/' . $session->session_id);
 
 		$body = $this->load->view('sessions/view', $this->data, TRUE);
 
 		if (empty($weeks)) {
-			$body = msgbox('error', 'Please add at least one Timetable Week.');
+			$body = msgbox('error', $this->lang->line('ErroTimeTable'));
 		}
 
 		$this->data['body'] = $icons . $body;
@@ -114,9 +118,9 @@ class Sessions extends MY_Controller
 
 		$updated = $this->dates_model->set_weeks($session_id, $dates);
 		if ($updated) {
-			$flashmsg = msgbox('info', "The session weeks have been updated.");
+			$flashmsg = msgbox('info', $this->lang->line('msgSessionWeeks1'));
 		} else {
-			$flashmsg = msgbox('error', "There was an error updating the session weeks.");
+			$flashmsg = msgbox('error', $this->lang->line('ErrorUpdatingSessionWeek'));
 		}
 
 		// echo "done";
@@ -137,14 +141,14 @@ class Sessions extends MY_Controller
 		$week = $this->weeks_model->get($week_id);
 
 		if (empty($week)) {
-			$flashmsg = msgbox('error', 'No week selected.');
+			$flashmsg = msgbox('error', $this->lang->line('Noweekselected'));
 			$this->session->set_flashdata('saved', $flashmsg);
 			redirect("sessions/view/{$session_id}");
 		}
 
 		$this->dates_model->apply_week($session_id, $week_id);
 
-		$flashmsg = msgbox('info', sprintf("%s has been applied to every week in the session.", html_escape($week->name)));
+		$flashmsg = msgbox('info', sprintf($this->lang->line('msgSessionWeeks2'), html_escape($week->name)));
 		$this->session->set_flashdata('saved', $flashmsg);
 
 		redirect("sessions/view/{$session_id}");
@@ -157,7 +161,7 @@ class Sessions extends MY_Controller
 	 */
 	public function add()
 	{
-		$this->data['title'] = 'Add Session';
+		$this->data['title'] = $this->lang->line('AddSession');
 
 		if ($this->input->post()) {
 			$this->save_session();
@@ -182,7 +186,7 @@ class Sessions extends MY_Controller
 
 	public function edit($session_id)
 	{
-		$this->data['title'] = $this->data['showtitle'] = 'Edit Session';
+		$this->data['title'] = $this->data['showtitle'] = $this->lang->line('EditSession');;
 
 		$this->data['session'] = $this->find_session($session_id);
 
@@ -215,15 +219,15 @@ class Sessions extends MY_Controller
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('name', 'Name', 'required|max_length[50]');
+		$this->form_validation->set_rules('name', $this->lang->line('Name'), 'required|max_length[50]');
 		$this->form_validation->set_rules('is_selectable', 'User-selectable', 'required|in_list[0,1]');
 
 		$callbackRule = strlen($session_id)
 		                 	? sprintf('callback__date_check[%d]', $session_id)
 		                 	: 'callback__date_check';
 
-		$this->form_validation->set_rules('date_start', 'Start date', "required|valid_date|{$callbackRule}");
-		$this->form_validation->set_rules('date_end', 'End date', "required|valid_date|{$callbackRule}");
+		$this->form_validation->set_rules('date_start', $this->lang->line('Startdate'), "required|valid_date|{$callbackRule}");
+		$this->form_validation->set_rules('date_end', $this->lang->line('Enddate'), "required|valid_date|{$callbackRule}");
 
 		$data = array(
 			'name' => $this->input->post('name'),
@@ -282,9 +286,9 @@ class Sessions extends MY_Controller
 		$this->data['action'] = current_url();
 		$this->data['id'] = $id;
 		$this->data['cancel'] = 'sessions';
-		$this->data['text'] = 'If you delete this session, <strong>all bookings</strong> and holidays during this session will be <strong>permanently deleted</strong> as well.';
+		$this->data['text'] = $this->lang->line('msgSessionWeeks3');
 
-		$this->data['title'] = sprintf('Delete Session (%s)', html_escape($session->name));
+		$this->data['title'] = sprintf($this->lang->line('msgSessionWeeks4'), html_escape($session->name));
 
 		$title = "<h2>{$this->data['title']}</h2>";
 		$body = $this->load->view('partials/deleteconfirm', $this->data, TRUE);
@@ -309,7 +313,7 @@ class Sessions extends MY_Controller
 			$dt = datetime_from_string($value);
 			$dtFormat = $dt->format('d/m/Y');
 			$sessionName = $session->name;
-			$msg = sprintf("The {field} (%s) is already part of an existing session (%s).", $dtFormat, $sessionName);
+			$msg = sprintf($this->lang->line('msgSessionWeeks5'), $dtFormat, $sessionName);
 			$this->form_validation->set_message('_date_check', $msg);
 			return FALSE;
 		}

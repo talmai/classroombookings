@@ -1,6 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Login extends MY_Controller
 {
@@ -14,7 +13,11 @@ class Login extends MY_Controller
 
 	function index()
 	{
-		$this->data['title'] = 'Log in';
+		if(!$this->lang->line('Access')){
+			$this->lang->load('custom');
+		}
+
+		$this->data['title'] = $this->lang->line('Access'); //'Acesso';
 
 		$this->data['message'] = '';
 		if (setting('login_message_enabled')) {
@@ -40,10 +43,12 @@ class Login extends MY_Controller
 			$columns['c2']['content'] = '';
 		}
 
-		$title = "<h2>Log in</h2>";
+		$title = "<h2>".$this->lang->line('AccessTitle')."</h2>"; //$this->data['title']."</h2>";
+		$subtitle = "<p>".$this->lang->line('AccessDescription')."</p>";
 		$body = $this->load->view('columns', $columns, TRUE);
 
-		$this->data['body'] = $title . $body;
+		$this->data['body'] = $title . $subtitle . $body;
+		log_message('debug', 'Login.php::index()');
 
 		return $this->render();
 	}
@@ -73,7 +78,7 @@ class Login extends MY_Controller
 			// Success! Redirect to control panel
 			redirect('');
 		} else {
-			$this->session->set_flashdata('auth', msgbox('error', 'Incorrect username and/or password.'));
+			$this->session->set_flashdata('auth', msgbox('error', 'Login ou senha incorretos'));
 			return $this->index();
 		}
 	}

@@ -10,8 +10,8 @@ $day_name = Calendar::get_day_name($date_info->weekday);
 $recurring_date_options = [];
 if ($is_admin) {
 	foreach ($recurring_dates as $date) {
-		$title = $date->date->format(setting('date_format_long'));
-		$title = trim(str_replace($day_name, '', $title));
+		$title = CI_Lang::diaTraduzido($date->date ,'d LLL yyyy'); // $this->lang->... //$date->date->format(setting('date_format_long')); //
+		// $title = trim(str_replace($day_name, '', $title));
 		if ($date->date->format('Y-m-d') == $date_info->date) $title = '* ' . $title;
 		$recurring_date_options[ $date->date->format('Y-m-d') ] = $title;
 	}
@@ -46,15 +46,15 @@ echo "<fieldset style='border:0'>";
 // Date
 //
 $field = 'date';
-$label = form_label('Date', 'date');
-$input = sprintf('%s (%s)', $datetime->format(setting('date_format_long')), html_escape($week->name));
+$label = form_label($this->lang->line('Date'), 'date');
+$input = sprintf('%s (%s)', $this->lang->dataTraduzida( $datetime->format(setting('date_format_long')) ), html_escape($week->name));
 echo "<p>{$label}{$input}</p>";
 
 
 // Period
 //
 $field = 'period_id';
-$label = form_label('Period', $field);
+$label = form_label($this->lang->line('Period'), $field);
 
 $time_fmt = setting('time_format_period');
 
@@ -85,7 +85,7 @@ echo "<p>{$label}{$input}</p>";
 // Room
 //
 $field = 'room_id';
-$label = form_label('Room', $field);
+$label = form_label($this->lang->line('Room'), $field);
 if ($is_admin) {
 	$options = results_to_assoc($all_rooms, 'room_id', 'name');
 	$value = set_value($field, $room->room_id, FALSE);
@@ -104,11 +104,11 @@ echo "<p>{$label}{$input}</p>";
 // Department
 //
 $field = 'department_id';
-$label = form_label('Department', $field);
+$label = form_label($this->lang->line('Department'), $field);
 $show_department = FALSE;
 if ($is_admin) {
 	$show_department = TRUE;
-	$options = results_to_assoc($all_departments, 'department_id', 'name', '(None)');
+	$options = results_to_assoc($all_departments, 'department_id', 'name', '('.$this->lang->line('None').')');
 	$value = set_value($field, $department ? $department->department_id : '', FALSE);
 	$input = form_dropdown([
 		'name' => $field,
@@ -129,13 +129,13 @@ echo ($show_department)
 // Who
 //
 $field = 'user_id';
-$label = form_label('Who', $field);
+$label = form_label($this->lang->line('Who'), $field);
 if ($is_admin) {
 	$options = results_to_assoc($all_users, 'user_id', function($user) {
 		return strlen($user->displayname)
 			? $user->displayname
 			: $user->username;
-	}, '(None)');
+	}, '('.$this->lang->line('None').')');
 	$value = set_value($field, $user->user_id, FALSE);
 	$input = form_dropdown([
 		'name' => $field,
@@ -155,7 +155,7 @@ echo "<p>{$label}{$input}</p>";
 //
 $field = 'notes';
 $value = set_value($field, '', FALSE);
-$label = form_label('Notes', 'notes');
+$label = form_label($this->lang->line('Notes'), 'notes');
 $input = form_textarea([
 	'autofocus' => 'true',
 	'name' => $field,
@@ -174,7 +174,7 @@ if ($is_admin) {
 	$field = 'recurring';
 	$value = set_value($field, '0', FALSE);
 
-	$label = form_label('Recurring?', 'recurring');
+	$label = form_label('Recorrente?', 'recurring');
 
 	$hidden = form_hidden($field, '0');
 	$input = form_checkbox([
@@ -197,16 +197,16 @@ if ($is_admin) {
 	// Info
 	//
 	$field = 'recurring_info';
-	$label = form_label('Recurs', 'recurring_info');
-	$input = sprintf('Every %s on %s', $day_name, html_escape($week->name));
+	$label = form_label($this->lang->line('Recurs'), 'recurring_info');
+	$input = sprintf('Cada %s em %s', $day_name, html_escape($week->name));
 	$recurring_fields[] = "<p>{$label}{$input}</p>";
 
 	// Starting from
 	//
 	$field = 'recurring_start';
-	$label = form_label('Starting from...', 'recurring_start');
+	$label = form_label( $this->lang->line('Startingfrom').'...', 'recurring_start');
 	$value = set_value($field, $date_info->date, FALSE);
-	$options = ['session' => '(Start of session)', 'Specific date...' => $recurring_date_options];
+	$options = ['session' => '('.$this->lang->line('Startofsession').')', $this->lang->line('Specificdate').'...' => $recurring_date_options];
 	$input = form_dropdown([
 		'name' => 'recurring_start',
 		'options' => $options,
@@ -217,9 +217,9 @@ if ($is_admin) {
 	// Until
 	//
 	$field = 'recurring_end';
-	$label = form_label('Until...', 'recurring_end');
+	$label = form_label( $this->lang->line('Until').'...', 'recurring_end');
 	$value = set_value($field, 'session', FALSE);
-	$options = ['session' => '(End of session)', 'Specific date...' => $recurring_date_options];
+	$options = ['session' => '('.$this->lang->line('Endofsession').')', $this->lang->line('Specificdate').'...' => $recurring_date_options];
 	$input = form_dropdown([
 		'name' => 'recurring_end',
 		'options' => $options,
@@ -239,14 +239,14 @@ $submit_single = form_button([
 	'type' => 'submit',
 	'name' => 'action',
 	'value' => 'create',
-	'content' => 'Create booking',
+	'content' => $this->lang->line('Createbooking'), 
 ]);
 
 $submit_recurring = form_button([
 	'type' => 'submit',
 	'name' => 'action',
 	'value' => 'preview_recurring',
-	'content' => 'Preview recurring bookings',
+	'content' => $this->lang->line('Previewrecurbooks'),
 ]);
 
 $cancel = anchor($return_uri, 'Cancel', ['up-dismiss' => '']);

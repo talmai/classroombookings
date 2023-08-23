@@ -1,6 +1,6 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
+ 
 class Periods extends MY_Controller
 {
 
@@ -21,11 +21,12 @@ class Periods extends MY_Controller
 
 	function index()
 	{
+		$this->lang->load('periods');
 		// Get data from database
 		$this->data['periods'] = $this->periods_model->Get();
 		$this->data['days_list'] = $this->periods_model->days;
 
-		$this->data['title'] = 'Periods';
+		$this->data['title'] = $this->lang->line('Periods');
 		$this->data['showtitle'] = $this->data['title'];	// . ' ('.$section.')';
 		$this->data['body'] = $this->load->view('periods/periods_index', $this->data, TRUE);
 
@@ -56,7 +57,7 @@ class Periods extends MY_Controller
 			),
 		);
 
-		$this->data['title'] = 'Add Period';
+		$this->data['title'] = $this->lang->line('AddPeriods'); //'Add Period';
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('columns', $columns, TRUE);
 
@@ -92,7 +93,7 @@ class Periods extends MY_Controller
 			),
 		);
 
-		$this->data['title'] = 'Edit Period';
+		$this->data['title'] = $this->lang->line('EditPeriod');//'Edit Period';
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('columns', $columns, TRUE);
 		return $this->render();
@@ -109,17 +110,17 @@ class Periods extends MY_Controller
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('period_id', 'ID', 'integer');
-		$this->form_validation->set_rules('name', 'Name', 'required|min_length[1]|max_length[30]');
-		$this->form_validation->set_rules('day_1', 'Monday', 'required|integer');
-		$this->form_validation->set_rules('day_2', 'Tuesday', 'required|integer');
-		$this->form_validation->set_rules('day_3', 'Wednesday', 'required|integer');
-		$this->form_validation->set_rules('day_4', 'Thursday', 'required|integer');
-		$this->form_validation->set_rules('day_5', 'Friday', 'required|integer');
-		$this->form_validation->set_rules('day_6', 'Saturday', 'required|integer');
-		$this->form_validation->set_rules('day_7', 'Sunday', 'required|integer');
-		$this->form_validation->set_rules('time_start', 'Start time', 'required|min_length[4]|max_length[5]|callback__is_valid_time');
-		$this->form_validation->set_rules('time_end', 'End time', 'required|min_length[4]|max_length[5]|callback__is_valid_time|callback__is_after[time_start]');
-		$this->form_validation->set_rules('bookable', 'Bookable', 'required|integer');
+		$this->form_validation->set_rules('name', $this->lang->line('Name'), 'required|min_length[1]|max_length[30]');
+		$this->form_validation->set_rules('day_1', $this->lang->line('Monday'), 'required|integer');
+		$this->form_validation->set_rules('day_2', $this->lang->line('Tuesday'), 'required|integer');
+		$this->form_validation->set_rules('day_3', $this->lang->line('Wednesday'), 'required|integer');
+		$this->form_validation->set_rules('day_4', $this->lang->line('Thursday'), 'required|integer');
+		$this->form_validation->set_rules('day_5', $this->lang->line('Friday'), 'required|integer');
+		$this->form_validation->set_rules('day_6', $this->lang->line('Saturday'), 'required|integer');
+		$this->form_validation->set_rules('day_7', $this->lang->line('Sunday'), 'required|integer');
+		$this->form_validation->set_rules('time_start', $this->lang->line('Starttime'), 'required|min_length[4]|max_length[5]|callback__is_valid_time');
+		$this->form_validation->set_rules('time_end', $this->lang->line('Endtime'), 'required|min_length[4]|max_length[5]|callback__is_valid_time|callback__is_after[time_start]');
+		$this->form_validation->set_rules('bookable', $this->lang->line('Bookable'), 'required|integer');
 
 		if ($this->form_validation->run() == FALSE) {
 			return (empty($period_id) ? $this->add() : $this->edit($period_id));
@@ -143,11 +144,11 @@ class Periods extends MY_Controller
 		if (empty($period_id)) {
 			// No ID, adding new record
 			$period_id = $this->periods_model->Add($period_data);
-			$this->session->set_flashdata('saved', msgbox('info', "{$period_data['name']} has been added."));
+			$this->session->set_flashdata('saved', msgbox('info', "{$period_data['name']} foi adicionado."));
 		} else {
 			// We have an ID, updating existing record
 			$this->periods_model->Edit($period_id, $period_data);
-			$this->session->set_flashdata('saved', msgbox('info', "{$period_data['name']} has been modified."));
+			$this->session->set_flashdata('saved', msgbox('info', "{$period_data['name']} foi modificado."));
 		}
 
 		redirect('periods');
@@ -166,21 +167,21 @@ class Periods extends MY_Controller
 			// Form has been submitted (so the POST value exists)
 			// Call model function to delete manufacturer
 			$this->periods_model->Delete($this->input->post('id'));
-			$this->session->set_flashdata('saved', msgbox('info', "The period has been deleted."));
+			$this->session->set_flashdata('saved', msgbox('info', $this->lang->line('msgPeriodDeleted')));
 			return redirect('periods');
 		}
 
 		if (empty($id)){
-			show_error("No period ID provided.");
+			show_error("Nenhum ID do período fornecido.");
 		}
 
 		// Initialise page
 		$this->data['action'] = 'periods/delete';
 		$this->data['id'] = $id;
 		$this->data['cancel'] = 'periods';
-		$this->data['text'] = 'If you delete this period, any bookings for this period in <strong>all</strong> rooms will be <strong>permenantly deleted</strong>.';
+		$this->data['text'] = $this->lang->line('warningPeriodDeletion');
 		$row = $this->periods_model->Get($id);
-		$this->data['title'] = 'Delete Period (' . html_escape($row->name) . ')';
+		$this->data['title'] = 'Excluir período (' . html_escape($row->name) . ')';
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('partials/deleteconfirm', $this->data, TRUE);
 		return $this->render();
@@ -208,7 +209,7 @@ class Periods extends MY_Controller
 		if ( ($times['data'] >= $times['am'] && $times['data'] <= $times['pm']) || !isset($times['data'])) {
 			$ret = true;
 		} else {
-			$this->form_validation->set_message('_is_valid_time', 'You entered an invalid time. It must be between 00:00 and 23:59.');
+			$this->form_validation->set_message('_is_valid_time', $this->lang->line('wrongTimeFormat'));
 			$ret = false;
 		}
 

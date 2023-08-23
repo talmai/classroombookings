@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Departments extends MY_Controller
 {
@@ -13,6 +13,8 @@ class Departments extends MY_Controller
 
 		$this->require_logged_in();
 		$this->require_auth_level(ADMINISTRATOR);
+		
+		$this->lang->load('departments');
 
 		$this->load->library('pagination');
 		$this->load->model('crud_model');
@@ -38,7 +40,7 @@ class Departments extends MY_Controller
 		// Get list of rooms from database
 		$this->data['departments'] = $this->departments_model->Get(NULL, $pagination_config['per_page'], $page);
 
-		$this->data['title'] = 'Departments';
+		$this->data['title'] = $this->lang->line('DepartmentTitle');
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('departments/departments_index', $this->data, TRUE);
 
@@ -56,7 +58,7 @@ class Departments extends MY_Controller
 	function add()
 	{
 		// Load view
-		$this->data['title'] = 'Add Department';
+		$this->data['title'] = $this->lang->line('AddDepartment');
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('departments/departments_add', NULL, TRUE);
 
@@ -78,7 +80,7 @@ class Departments extends MY_Controller
 			show_404();
 		}
 
-		$this->data['title'] = 'Edit Department';
+		$this->data['title'] = $this->lang->line('EditDepartment');
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('departments/departments_add', $this->data, TRUE);
 
@@ -159,10 +161,10 @@ class Departments extends MY_Controller
 		$this->data['action'] = 'departments/delete';
 		$this->data['id'] = $id;
 		$this->data['cancel'] = 'departments';
-		$this->data['text'] = 'If you delete this department, you must re-assign any of its members to another department.';
+		$this->data['text'] = $this->lang->line('msgDeleteDepartment'); // 
 
 		$row = $this->departments_model->Get($id);
-		$this->data['title'] = 'Delete Department ('.html_escape($row->name).')';
+		$this->data['title'] = $this->lang->line('DeleteDepartment').' ('.html_escape($row->name).')';
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('partials/deleteconfirm', $this->data, TRUE);
 

@@ -2,7 +2,7 @@
 
 namespace app\components\bookings;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script � permitido');
 
 
 use \DateTime;
@@ -78,6 +78,10 @@ class Slot
 			$this->booking = $this->context->bookings[ $this->key ];
 		}
 
+		if(!$this->CI->lang->line('Holiday')){
+			$this->CI->lang->load('custom');
+		}
+
 		$this->set_status();
 	}
 
@@ -113,7 +117,7 @@ class Slot
 			$date_fmt = 'd/m/Y';
 
 			$this->label = $holiday
-				? sprintf("Holiday: %s<br>(%s - %s)",
+				? sprintf( $this->CI->lang->line('Holiday').": %s<br>(%s - %s)",
 		          	$holiday->name,
 		          	$holiday->date_start->format($date_fmt),
 		          	$holiday->date_end->format($date_fmt)
@@ -134,7 +138,7 @@ class Slot
 			$this->status = self::STATUS_UNAVAILABLE;
 			$this->reason = self::UNAVAILABLE_PERIOD;
 
-			$this->label = sprintf('%s not available on %s.', $this->period->name, $day_name);
+			$this->label = sprintf('%s não disponível em %s.', $this->period->name, $day_name);
 
 			return;
 		}
@@ -160,6 +164,10 @@ class Slot
 		$start_date = ($this->context->session->is_current == '1')
 			? date('Y-m-d')
 			: $this->context->session->date_start->format('Y-m-d');
+			
+		// TODO: Ibam: Adicionar restrição para dias no futuro para reservas
+		// 1- criar campo para edição, 2- verificar incluindo estes dias... 
+		// 3- exibir msg de erro apropriada 'msgBlockedDays'
 		$booking_permitted = $this->CI->userauth->can_create_booking($this->date->date, $start_date);
 
 		if ($booking_permitted->result === FALSE) {
@@ -173,18 +181,18 @@ class Slot
 				case $booking_permitted->date_in_range:
 					$advance = (int) abs(setting('bia'));
 					$this->view_data = ['extended' => 'future'];
-					$this->label = sprintf('You can only create bookings up to %d days in the future.', $advance);
+					$this->label = sprintf( $this->CI->lang->line('msgDaysinFuture'), $advance);
 					break;
 
 				case $booking_permitted->is_future_date:
 					$this->view_data = ['extended' => 'past'];
-					$this->label = 'Booking date is in the past.';
+					$this->label = $this->CI->lang->line('msgPassedDays');
 					break;
 
 				case $booking_permitted->in_quota:
 					$max = (int) abs(setting('num_max_bookings'));
 					$this->view_data = ['extended' => 'quota'];
-					$this->label = sprintf('You currently have the maximum number of active bookings (%d).', $max);
+					$this->label = sprintf( $this->CI->lang->line('ErrorMaxBookings'), $max);
 					break;
 
 				default:

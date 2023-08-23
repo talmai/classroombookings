@@ -2,6 +2,9 @@
 
 use app\components\bookings\agent\UpdateAgent;
 
+if ( !($this->lang->line('Date')) ) {
+	$this->lang->load('custom');
+}
 
 // Form
 //
@@ -31,13 +34,13 @@ if ($booking->repeat_id) {
 
 	switch ($edit_mode) {
 		case UpdateAgent::EDIT_ONE:
-			$msg = 'The changes you make below will apply to the selected booking only.';
+			$msg = 'msgBooking1';
 			break;
 		case UpdateAgent::EDIT_FUTURE:
-			$msg = 'The changes you make below will apply to the selected booking and all future entries in the series.';
+			$msg = 'msgBooking2';
 			break;
 		case UpdateAgent::EDIT_ALL:
-			$msg = 'The changes you make below will apply to all bookings in the series.';
+			$msg = 'msgBooking3';
 			break;
 	}
 
@@ -51,7 +54,7 @@ $datetime = datetime_from_string($booking->date);
 // Date
 //
 $field = 'booking_date';
-$label = form_label('Date', $field);
+$label = form_label($this->lang->line('Date'), $field);
 if ($features[UpdateAgent::FEATURE_DATE]) {
 	$input = form_input(array(
 		'class' => 'up-datepicker-input',
@@ -68,7 +71,7 @@ if ($features[UpdateAgent::FEATURE_DATE]) {
 		'src' => base_url('assets/images/ui/cal_day.png'),
 		'width' => 16,
 		'height' => 16,
-		'title' => 'Choose date',
+		'title' => $this->lang->line('Chooseadate'),
 		'class' => 'up-datepicker',
 		'up-data' => html_escape(json_encode(['input' => $field])),
 	]);
@@ -84,7 +87,7 @@ echo "<p>{$label}{$input}</p>";
 // Period
 //
 $field = 'period_id';
-$label = form_label('Period', $field);
+$label = form_label($this->lang->line('Period'), $field);
 
 $time_fmt = setting('time_format_period');
 
@@ -115,7 +118,7 @@ echo "<p>{$label}{$input}</p>";
 // Room
 //
 $field = 'room_id';
-$label = form_label('Room', $field);
+$label = form_label($this->lang->line('Room'), $field);
 if ($features[UpdateAgent::FEATURE_ROOM]) {
 	$options = results_to_assoc($all_rooms, 'room_id', 'name');
 	$value = set_value($field, $booking->room_id, FALSE);
@@ -134,11 +137,11 @@ echo "<p>{$label}{$input}</p>";
 // Department
 //
 $field = 'department_id';
-$label = form_label('Department', $field);
+$label = form_label($this->lang->line('Department'), $field);
 $show_department = FALSE;
 if ($features[UpdateAgent::FEATURE_DEPARTMENT]) {
 	$show_department = TRUE;
-	$options = results_to_assoc($all_departments, 'department_id', 'name', '(None)');
+	$options = results_to_assoc($all_departments, 'department_id', 'name', '('.$this->lang->line('None').')');
 	$value = set_value($field, $booking->department_id, FALSE);
 	$input = form_dropdown([
 		'name' => $field,
@@ -159,13 +162,13 @@ echo ($show_department)
 // Who
 //
 $field = 'user_id';
-$label = form_label('Who', $field);
+$label = form_label($this->lang->line('Who'), $field);
 if ($is_admin) {
 	$options = results_to_assoc($all_users, 'user_id', function($user) {
 		return strlen($user->displayname)
 			? $user->displayname
 			: $user->username;
-	}, '(None)');
+	}, '('.$this->lang->line('None').')');
 	$value = set_value($field, $booking->user_id, FALSE);
 	$input = form_dropdown([
 		'name' => $field,
@@ -185,7 +188,7 @@ echo "<p>{$label}{$input}</p>";
 //
 $field = 'notes';
 $value = set_value($field, $booking->notes, FALSE);
-$label = form_label('Notes', 'notes');
+$label = form_label($this->lang->line('Notes'), 'notes');
 if ($features[UpdateAgent::FEATURE_NOTES]) {
 	$input = form_textarea([
 		'name' => $field,
@@ -210,7 +213,7 @@ $submit = form_button([
 	'type' => 'submit',
 	'name' => 'action',
 	'value' => 'update',
-	'content' => 'Update booking',
+	'content' => $this->lang->line('Updatebooking'),
 ]);
 
 $cancel = anchor($return_uri, 'Cancel', ['up-dismiss' => '']);

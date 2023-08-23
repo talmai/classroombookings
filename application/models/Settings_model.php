@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Settings_model extends CI_Model
 {

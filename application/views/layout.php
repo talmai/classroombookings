@@ -1,10 +1,16 @@
 <?php
 $global_menu = $this->menu_model->global();
-?>
 
+// Ibam: add chamada
+use app\components\bookings\Context;
+// Ibam: Add
+if(!$this->lang->line('loggedin')){ 
+	$this->lang->load('custom');
+}
+?>
 <!DOCTYPE html>
 <html>
-	<meta charset="UTF-8">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Craig A Rodway">
@@ -87,7 +93,7 @@ $global_menu = $this->menu_model->global();
 						$label = strlen($this->userauth->user->displayname) > 1
 							? $this->userauth->user->displayname
 							: $this->userauth->user->username;
-						echo sprintf('<p class="normal">Logged in as %s</p>', html_escape($label));
+						echo sprintf('<p class="normal">'.$this->lang->line('loggedin').'%s</p>', html_escape($label));
 					}
 
 					?>
@@ -121,7 +127,7 @@ $global_menu = $this->menu_model->global();
 							<?php
 							if ($this->userauth->is_level(ADMINISTRATOR)) {
 								$global_menu[] = [
-									'label' => 'Updates',
+									'label' => 'Atualizações',
 									'url' => 'https://www.classroombookings.com/news/',
 									'ext' => true,
 									'icon' => 'feed.png',
@@ -148,7 +154,7 @@ $global_menu = $this->menu_model->global();
 							<span><a href="https://www.classroombookings.com/" target="_blank">classroombookings</a> version <?= VERSION ?>.
 							&copy; <?= date('Y') ?> Craig A Rodway.</span>
 							<br />
-							Load time: <?php echo $this->benchmark->elapsed_time() ?> seconds.
+							<?php echo $this->lang->line('loadtime').": ".$this->benchmark->elapsed_time()." ".$this->lang->line('seconds') ?>.
 						</div>
 					</div>
 				</div>

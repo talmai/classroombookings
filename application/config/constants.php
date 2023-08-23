@@ -1,9 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 // Classroombookings version
 //
-define('VERSION', '2.6.5');
+define('VERSION', '2.6.6');
 
 // User auth types
 //

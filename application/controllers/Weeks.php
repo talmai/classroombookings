@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Weeks extends MY_Controller
 {
@@ -14,6 +14,10 @@ class Weeks extends MY_Controller
 
 		$this->require_logged_in();
 		$this->require_auth_level(ADMINISTRATOR);
+		
+		if(!$this->lang->line('timetableweeks')){
+			$this->lang->load('custom');
+		}	
 
 		$this->load->model('crud_model');
 		$this->load->model('holidays_model');
@@ -27,7 +31,7 @@ class Weeks extends MY_Controller
 	public function index()
 	{
 		$this->data['weeks'] = $this->weeks_model->get_all();
-		$this->data['title'] = $this->data['showtitle'] = 'Timetable Weeks';
+		$this->data['title'] = $this->data['showtitle'] = $this->lang->line('timetableweeks'); //'Timetable Weeks';
 
 		$body = $this->load->view('weeks/index', $this->data, TRUE);
 
@@ -43,7 +47,7 @@ class Weeks extends MY_Controller
 	 */
 	public function add()
 	{
-		$this->data['title'] = $this->data['showtitle'] = 'Add Timetable Week';
+		$this->data['title'] = $this->data['showtitle'] = $this->lang->line('WeekTitle');
 
 		if ($this->input->post()) {
 			$this->save_week();
@@ -70,7 +74,7 @@ class Weeks extends MY_Controller
 	{
 		$this->data['week'] = $this->find_week($id);
 
-		$this->data['title'] = $this->data['showtitle'] = 'Edit Week';
+		$this->data['title'] = $this->data['showtitle'] = $this->lang->line('EditWeek');
 
 		if ($this->input->post()) {
 			$this->save_week($this->data['week']->week_id);
@@ -113,8 +117,8 @@ class Weeks extends MY_Controller
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('name', 'Name', 'required|max_length[20]');
-		$this->form_validation->set_rules('bgcol', 'Colour', "required|min_length[6]|max_length[7]");
+		$this->form_validation->set_rules('name', $this->lang->line('Name'), 'required|max_length[20]');
+		$this->form_validation->set_rules('bgcol', $this->lang->line('Colour'), "required|min_length[6]|max_length[7]");
 
 		$data = array(
 			'name' => $this->input->post('name'),
@@ -156,7 +160,7 @@ class Weeks extends MY_Controller
 	{
 		$week = $this->find_week($id);
 
-		$this->data['title'] = $this->data['showtitle'] = 'Timetable Weeks';
+		$this->data['title'] = $this->data['showtitle'] = $this->lang->line('timetableweeks'); // 'Timetable Weeks';
 
 		if ($this->input->post('id')) {
 			$this->weeks_model->delete($this->input->post('id'));
@@ -168,7 +172,7 @@ class Weeks extends MY_Controller
 		$this->data['action'] = current_url();
 		$this->data['id'] = $id;
 		$this->data['cancel'] = 'weeks';
-		$this->data['text'] = 'If you delete this week, <strong>all reurring bookings</strong> that take place on this week will be permanently deleted.';
+		$this->data['text'] = $this->lang->line('msgDeleteWeek'); 
 
 		$this->data['title'] = sprintf('Delete %s', html_escape($week->name));
 

@@ -24,7 +24,7 @@
 	if ( ! empty($room_info)) {
 		echo $fields_html;
 	} else {
-		echo "<p><em>No details available.</em></p>";
+		echo "<p><em>".$this->lang->line('Nodetailsavailable').".</em></p>";
 	}
 
 	echo $photo_html;

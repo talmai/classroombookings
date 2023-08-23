@@ -6,10 +6,10 @@ echo form_open_multipart(current_url(), array('id'=>'schooldetails', 'class'=>'c
 
 <fieldset>
 
-	<legend accesskey="I" tabindex="<?php echo tab_index(); ?>">School Information</legend>
+	<legend accesskey="I" tabindex="<?php echo tab_index(); ?>"><?php echo $this->lang->line('SchoolInformation'); ?></legend>
 
 	<p>
-		<label for="schoolname" class="required">School name</label>
+		<label for="schoolname" class="required"><?php echo $this->lang->line('SchoolName'); ?></label>
 		<?php
 		$value = set_value('schoolname', element('name', $settings), FALSE);
 		echo form_input(array(
@@ -25,7 +25,7 @@ echo form_open_multipart(current_url(), array('id'=>'schooldetails', 'class'=>'c
 	<?php echo form_error('schoolname'); ?>
 
 	<p>
-		<label for="website">Website address</label>
+		<label for="website"><?php echo $this->lang->line('Websiteaddress'); ?></label>
 		<?php
 		$value = set_value('website', element('website', $settings), FALSE);
 		echo form_input(array(
@@ -46,24 +46,24 @@ echo form_open_multipart(current_url(), array('id'=>'schooldetails', 'class'=>'c
 
 <fieldset>
 
-	<legend accesskey="L" tabindex="<?php echo tab_index() ?>">School Logo</legend>
+	<legend accesskey="L" tabindex="<?php echo tab_index() ?>"><?php echo $this->lang->line('SchoolLogo'); ?></legend>
 
-	<div>Use this section to upload a school logo.</div>
+	<div><?php echo $this->lang->line('SchoolLogoDescription'); ?></div>
 
 	<p>
-		<label>Current logo</label>
+		<label><?php echo $this->lang->line('Currentlogo'); ?></label>
 		<?php
 		$logo = element('logo', $settings);
 		if ( ! empty($logo) && is_file(FCPATH . 'uploads/' . $logo)) {
 			echo img('uploads/' . $logo, FALSE, "style='padding:1px; border:1px solid #ccc; max-width: 300px; width: auto; height: auto'");
 		} else {
-			echo "<span><em>None found</em></span>";
+			echo "<span><em>".$this->lang->line('Nonefound')."</em></span>";
 		}
 		?>
 	</p>
 
 	<p>
-		<label for="userfile">File upload</label>
+		<label for="userfile"><?php echo $this->lang->line('Fileupload'); ?></label>
 		<?php
 		echo form_upload(array(
 			'name' => 'userfile',
@@ -74,7 +74,7 @@ echo form_open_multipart(current_url(), array('id'=>'schooldetails', 'class'=>'c
 			'value' => '',
 		));
 		?>
-		<p class="hint">Uploading a new logo will <span>overwrite</span> the current one.</p>
+		<p class="hint"><?php echo $this->lang->line('msgUpload'); ?></p>
 	</p>
 
 	<?php
@@ -84,7 +84,7 @@ echo form_open_multipart(current_url(), array('id'=>'schooldetails', 'class'=>'c
 	?>
 
 	<p>
-		<label for="logo_delete">Delete logo?</label>
+		<label for="logo_delete"><?php echo $this->lang->line('Deletelogomsg'); ?>?</label>
 		<?php
 		echo form_checkbox(array(
 			'name' => 'logo_delete',
@@ -94,7 +94,7 @@ echo form_open_multipart(current_url(), array('id'=>'schooldetails', 'class'=>'c
 			'checked' => FALSE,
 		));
 		?>
-		<p class="hint">Tick this box to <span>delete the current logo</span>. If you are uploading a new logo this will be done automatically.</p>
+		<p class="hint"><?php echo $this->lang->line('Deletelogomsg2'); ?></p>
 	</p>
 
 </fieldset>

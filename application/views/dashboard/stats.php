@@ -5,17 +5,17 @@ $block_class = 'b-33';
 $blocks = [];
 
 $blocks[] = [
-	'title' => 'All bookings',
+	'title' => $this->lang->line('Allbookings'),
 	'figure' => $totals['all'],
 ];
 
 $blocks[] = [
-	'title' => 'Bookings this session',
+	'title' => $this->lang->line('Bookingsthissession'),
 	'figure' => $totals['session'],
 ];
 
 $blocks[] = [
-	'title' => 'Active bookings',
+	'title' => $this->lang->line('Activebookings'),
 	'figure' => $totals['active'],
 ];
 
@@ -34,12 +34,12 @@ if ($max_active_bookings > 0) {
 	$num_active = (int) $totals['active'];
 
 	$blocks[] = [
-		'title' => 'Maximum active bookings allowed',
+		'title' => $this->lang->line('Maximumactivebookings'),
 		'figure' => $max_active_bookings,
 	];
 
 	$blocks[] = [
-		'title' => 'Bookings you can make',
+		'title' => $this->lang->line('Bookingsyoucanmake'),
 		'figure' => ($max_active_bookings - $num_active),
 	];
 

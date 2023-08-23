@@ -3,14 +3,18 @@ echo $this->session->flashdata('saved');
 echo isset($notice) ? $notice : '';
 echo form_open_multipart(current_url(), array('class' => 'cssform', 'id' => 'user_import'));
 echo form_hidden('action', 'import');
+
+if ( !($this->lang->line('Type')) ) {
+	$this->lang->load('custom'); 
+}
 ?>
 
 <fieldset class="cssform-stacked">
 
-	<legend accesskey="I" tabindex="<?= tab_index() ?>">Import Source</legend>
+	<legend accesskey="I" tabindex="<?= tab_index() ?>"><?= $this->lang->line('ImportSource') ?></legend>
 
 	<p class="input-group">
-		<label for="userfile" class="required">CSV File</label>
+		<label for="userfile" class="required"><?= $this->lang->line('CSVFile') ?></label>
 		<?php
 		echo form_upload(array(
 			'name' => 'userfile',
@@ -21,7 +25,7 @@ echo form_hidden('action', 'import');
 			'value' => '',
 		));
 		?>
-		<p class="hint">Maximum filesize <span><?php echo $max_size_human ?></span>.</p>
+		<p class="hint"><?= $this->lang->line('Maximumfilesize') ?> <span><?php echo $max_size_human ?></span>.</p>
 	</p>
 
 
@@ -31,12 +35,12 @@ echo form_hidden('action', 'import');
 
 <fieldset>
 
-	<legend accesskey="F">Default values</legend>
+	<legend accesskey="F"><?= $this->lang->line('Defaultvalues') ?></legend>
 
-	<div>Enter the default values that will be applied to all users if not specified in the import file.</div>
+	<div><?= $this->lang->line('msgDefaultvalues') ?></div>
 
 	<p class="input-group">
-		<label for="password">Password</label>
+		<label for="password"><?= $this->lang->line('Password') ?></label>
 		<?php
 		echo form_password(array(
 			'name' => 'password',
@@ -50,7 +54,7 @@ echo form_hidden('action', 'import');
 	</p>
 
 	<p class="input-group">
-		<label for="authlevel" class="required">Type</label>
+		<label for="authlevel" class="required"><?= $this->lang->line('Type') ?></label>
 		<?php
 		$data = array('1' => 'Administrator', '2' => 'Teacher');
 		echo form_dropdown(

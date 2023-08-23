@@ -1,5 +1,10 @@
 # classroombookings Changelog
 
+## [2.6.6] 2023-08-22
+
+### Changed
+- Initial translation to PT-BR
+
 
 ## [2.6.5] 2022-10-31
 
@@ -10,7 +15,6 @@
 
 ### Changed
 - Extra checks for https scheme detection.
-
 
 
 ## [2.6.4] 2022-07-22

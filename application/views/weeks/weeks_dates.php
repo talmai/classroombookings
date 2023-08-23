@@ -1,6 +1,6 @@
-<fieldset><legend accesskey="D" tabindex="6">Week Dates</legend>
+<fieldset><legend accesskey="D" tabindex="6"><?= $this->lang->line('WeekDates') ?></legend>
 
-<div>Please select the week-commencing (Monday) dates within the current academic year that this week applies to.</div>
+<div><?= $this->lang->line('msgWeekDates1') ?></div>
 
 <?php
 /*

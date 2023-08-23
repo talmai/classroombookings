@@ -1,14 +1,18 @@
 <?php
 
+if ( !($this->lang->line('Type')) ) {
+	$this->lang->load('custom'); 
+}
+
 function import_status($key) {
 
 	$labels = array(
-		'username_empty' => 'Username empty',
-		'password_empty' => 'No password',
-		'username_exists' => 'User exists',
-		'success' => 'Success',
-		'db_error' => 'Error',
-		'invalid' => 'Failed validation',
+		'username_empty' => $this->lang->line('Usernameempty'),
+		'password_empty' => $this->lang->line('Nopassword'),
+		'username_exists' => $this->lang->line('Userexists'),
+		'success' => $this->lang->line('Success'),
+		'db_error' => $this->lang->line('Error'),
+		'invalid' => $this->lang->line('Failedvalidation'),
 	);
 
 	if (array_key_exists($key, $labels)) {
@@ -17,7 +21,6 @@ function import_status($key) {
 
 	return 'Unknown';
 }
-
 ?>
 
 <?php if (is_array($result)): ?>
@@ -26,10 +29,10 @@ function import_status($key) {
 
 	<thead>
 		<tr class="heading">
-			<td class="h">Row</td>
-			<td class="h">Username</td>
-			<td class="h">Created</td>
-			<td class="h">Status</td>
+			<td class="h"><?= $this->lang->line('Row') ?></td>
+			<td class="h"><?= $this->lang->line('Username') ?></td>
+			<td class="h"><?= $this->lang->line('Created') ?></td>
+			<td class="h"><?= $this->lang->line('Status') ?></td>
 		</tr>
 	</thead>
 
@@ -43,7 +46,7 @@ function import_status($key) {
 			echo '<tr>';
 			echo "<td>#{$row->line}</td>";
 			echo '<td style="width: 50%">' . html_escape($row->user->username) . '</td>';
-			echo '<td>' . ($row->status == 'success' ? 'Yes' : 'No') . '</td>';
+			echo '<td>' . ($row->status == 'success' ? $this->lang->line('Yes') : $this->lang->line('No') ) . '</td>';
 			echo "<td style='font-weight:bold;color:{$colour}'>" . import_status($row->status) . "</td>";
 			echo '</tr>';
 		}
@@ -57,8 +60,8 @@ function import_status($key) {
 <?php
 
 $iconbar = iconbar(array(
-	array('users', 'All Users', 'school_manage_users.png'),
-	array('users/import', 'Import More Users', 'user_import.png'),
+	array('users', $this->lang->line('AllUsers'), 'school_manage_users.png'),
+	array('users/import', $this->lang->line('ImportMoreUsers'), 'user_import.png'),
 ));
 
 echo $iconbar;

@@ -4,8 +4,11 @@ echo "<div class='messages' up-hungry>{$messages}</div>";
 
 $sort_cols = ["Room", "Who", "Permission"];
 
-$this->load->view('access_control/add_link');
+if ( !($this->lang->line('Type')) ) {
+	$this->lang->load('custom'); 
+}
 
+$this->load->view('access_control/add_link');
 $this->load->view('access_control/filter');
 
 ?>
@@ -14,9 +17,9 @@ $this->load->view('access_control/filter');
 	<col /><col /><col />
 	<thead>
 	<tr class="heading">
-		<td class="h" width="20%" title="Room">Room</td>
-		<td class="h" width="40%" title="Who">Who</td>
-		<td class="h" width="10%" title="Permission">Permission</td>
+		<td class="h" width="20%" title="Room"><?= $this->lang->line('Room') ?></td>
+		<td class="h" width="40%" title="Who"><?= $this->lang->line('Who') ?></td>
+		<td class="h" width="10%" title="Permission"><?= $this->lang->line('Permission') ?></td>
 		<td class="h" width="5%" title="X"></td>
 	</tr>
 	</thead>
@@ -56,7 +59,7 @@ $this->load->view('access_control/filter');
 						'title' => 'Delete',
 						'up-follow' => '',
 						'up-method' => 'POST',
-						'up-confirm' => 'Are you sure you want to remove this entry?',
+						'up-confirm' => $this->lang->line('msgConfirmDeletion'),
 					]) . "</p>";
 					?>
 				</td>
@@ -71,7 +74,7 @@ $this->load->view('access_control/filter');
 
 		<tbody>
 			<tr>
-				<td colspan="5" align="center" style="padding:16px 0">No access control entries found!</td>
+				<td colspan="5" align="center" style="padding:16px 0"><?= $this->lang->line('noAccessEntryFound') ?></td>
 			</tr>
 		</tbody>
 

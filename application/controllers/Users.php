@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Users extends MY_Controller
 {
@@ -13,7 +13,11 @@ class Users extends MY_Controller
 
 		$this->require_logged_in();
 		$this->require_auth_level(ADMINISTRATOR);
-
+		
+		if(!$this->lang->line('AddUser')){
+			$this->lang->load('custom');
+		}		
+		
 		$this->load->model('crud_model');
 		$this->load->model('users_model');
 		$this->load->model('departments_model');
@@ -61,7 +65,7 @@ class Users extends MY_Controller
 		$this->data['pagelinks'] = $this->pagination->create_links();
 
 		$this->data['users'] = $users;
-		$this->data['title'] = 'Manage Users';
+		$this->data['title'] = $this->lang->line('ManageUsersTitle');
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('users/users_index', $this->data, TRUE);
 
@@ -79,7 +83,7 @@ class Users extends MY_Controller
 	{
 		$this->data['departments'] = $this->departments_model->Get(NULL, NULL, NULL);
 
-		$this->data['title'] = 'Add User';
+		$this->data['title'] = $this->lang->line('AddUser');
 		$this->data['showtitle'] = $this->data['title'];
 
 		$columns = array(
@@ -115,7 +119,7 @@ class Users extends MY_Controller
 
 		$this->data['departments'] = $this->departments_model->Get(NULL, NULL, NULL);
 
-		$this->data['title'] = 'Edit User';
+		$this->data['title'] = $this->lang->line('EditUser');
 		$this->data['showtitle'] = $this->data['title'];
 
 		$columns = array(
@@ -148,27 +152,27 @@ class Users extends MY_Controller
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('user_id', 'ID', 'integer');
-		$this->form_validation->set_rules('username', 'Username', 'required|max_length[32]|regex_match[/^[A-Za-z0-9-_.@]+$/]');
-		$this->form_validation->set_rules('authlevel', 'Type', 'required|integer');
-		$this->form_validation->set_rules('enabled', 'Enabled', 'required|integer');
-		$this->form_validation->set_rules('email', 'Email address', 'valid_email|max_length[255]');
+		$this->form_validation->set_rules('user_id', $this->lang->line('ID'), 'integer');
+		$this->form_validation->set_rules('username', $this->lang->line('Username'), 'required|max_length[32]|regex_match[/^[A-Za-z0-9-_.@]+$/]');
+		$this->form_validation->set_rules('authlevel', $this->lang->line('Type'), 'required|integer');
+		$this->form_validation->set_rules('enabled', $this->lang->line('Enabled'), 'required|integer');
+		$this->form_validation->set_rules('email', $this->lang->line('Email'), 'valid_email|max_length[255]');
 
 		if (empty($user_id)) {
-			$this->form_validation->set_rules('password1', 'Password', 'trim|required');
-			$this->form_validation->set_rules('password2', 'Password (confirm)', 'trim|matches[password1]');
+			$this->form_validation->set_rules('password1', $this->lang->line('Password'), 'trim|required');
+			$this->form_validation->set_rules('password2', $this->lang->line('Password').' (confirmar)', 'trim|matches[password1]');
 		} else {
 			if ($this->input->post('password1')) {
-				$this->form_validation->set_rules('password1', 'Password', 'trim');
-				$this->form_validation->set_rules('password2', 'Password (confirm)', 'trim|matches[password1]');
+				$this->form_validation->set_rules('password1', $this->lang->line('Password'), 'trim');
+				$this->form_validation->set_rules('password2', $this->lang->line('Password').' (confirmar)', 'trim|matches[password1]');
 			}
 		}
 
-		$this->form_validation->set_rules('firstname', 'First name', 'max_length[20]');
-		$this->form_validation->set_rules('lastname', 'Last name', 'max_length[20]');
-		$this->form_validation->set_rules('displayname', 'Display name', 'max_length[20]');
-		$this->form_validation->set_rules('department_id', 'Department', 'integer');
-		$this->form_validation->set_rules('ext', 'Extension', 'max_length[10]');
+		$this->form_validation->set_rules('firstname', $this->lang->line('Firstname'), 'max_length[20]');
+		$this->form_validation->set_rules('lastname', $this->lang->line('Lastname'), 'max_length[20]');
+		$this->form_validation->set_rules('displayname', $this->lang->line('Displayname'), 'max_length[20]');
+		$this->form_validation->set_rules('department_id', $this->lang->line('Department'), 'integer');
+		$this->form_validation->set_rules('ext', $this->lang->line('Extension'), 'max_length[10]');
 
 		if ($this->form_validation->run() == FALSE) {
 			return (empty($user_id) ? $this->add() : $this->edit($user_id));
@@ -240,7 +244,7 @@ class Users extends MY_Controller
 		}
 
 		if ($id == $_SESSION['user_id']) {
-			$flashmsg = msgbox('error', "You cannot delete your own user account.");
+			$flashmsg = msgbox('error', $this->lang->line('msgErroDeleteOwnUser') );
 			$this->session->set_flashdata('saved', $flashmsg);
 			return redirect('users');
 		}
@@ -248,11 +252,11 @@ class Users extends MY_Controller
 		$this->data['action'] = 'users/delete';
 		$this->data['id'] = $id;
 		$this->data['cancel'] = 'users';
-		$this->data['text'] = 'If you delete this user, all of their past and future bookings will also be deleted, and their rooms will no longer be owned by them.';
+		$this->data['text'] = $this->lang->line('msgDeletingUser');
 
 		$row = $this->users_model->Get($id);
 
-		$this->data['title'] = 'Delete User ('.html_escape($row->username).')';
+		$this->data['title'] = $this->lang->line('DeleteUser').' ('.html_escape($row->username).')';
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('partials/deleteconfirm', $this->data, TRUE);
 
@@ -275,7 +279,7 @@ class Users extends MY_Controller
 
 		$this->cleanup_import();
 
-		$this->data['title'] = 'Import Users';
+		$this->data['title'] = $this->lang->line('ImportUsers');
 		$this->data['showtitle'] = $this->data['title'];
 		// $this->data['body'] = $this->load->view('users/import/stage1', NULL, TRUE);
 
@@ -308,14 +312,14 @@ class Users extends MY_Controller
 	public function import_results()
 	{
 		if ( ! array_key_exists('import_results', $_SESSION)) {
-			$flashmsg = msgbox('error', "No import data found.");
+			$flashmsg = msgbox('error', $this->lang->line('ErroImporting1') );
 			$this->session->set_flashdata('saved', $flashmsg);
 			return redirect('users/import');
 		}
 
 		$filename = $_SESSION['import_results'];
 		if ( ! is_file(FCPATH . "local/{$filename}")) {
-			$flashmsg = msgbox('error', "Import results file not found.");
+			$flashmsg = msgbox('error', $this->lang->line('ErroImporting2') );
 			$this->session->set_flashdata('saved', $flashmsg);
 			return redirect('users/import');
 		}
@@ -325,7 +329,7 @@ class Users extends MY_Controller
 
 		$this->data['result'] = $result;
 
-		$this->data['title'] = 'Imported Users';
+		$this->data['title'] = $this->lang->line('ImportedUsers');
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('users/import/stage2', $this->data, TRUE);
 
@@ -347,7 +351,7 @@ class Users extends MY_Controller
 		              && ! empty($_FILES['userfile']['name']));
 
 		if ( ! $has_csv) {
-			$notice = msgbox('exclamation', "No CSV file uploaded");
+			$notice = msgbox('exclamation', $this->lang->line('ErroCSVFile') );
 			$this->data['notice'] = $notice;
 			return FALSE;
 		}
@@ -444,27 +448,27 @@ class Users extends MY_Controller
 		$rules = [
 			[
 				'field' => 'username',
-				'label' => 'Username',
+				'label' => $this->lang->line('User'),
 				'rules' => 'trim|required|max_length[32]|regex_match[/^[A-Za-z0-9-_.@]+$/]',
 			],
 			[
 				'field' => 'firstname',
-				'label' => 'First name',
+				'label' => 'Primeiro nome',
 				'rules' => 'trim|max_length[20]',
 			],
 			[
 				'field' => 'lastname',
-				'label' => 'Last name',
+				'label' => 'Sobrenome',
 				'rules' => 'trim|max_length[20]',
 			],
 			[
 				'field' => 'email',
-				'label' => 'Email address',
+				'label' => 'E-mail',
 				'rules' => 'valid_email|max_length[255]',
 			],
 			[
 				'field' => 'password',
-				'label' => 'Password',
+				'label' => $this->lang->line('Password'),
 				'rules' => 'required',
 			],
 		];

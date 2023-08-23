@@ -2,7 +2,7 @@
 
 namespace app\components\bookings;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 
 use \DateTime;
@@ -595,8 +595,6 @@ class Context
 			: [];
 
 		foreach ($dates as $date_info) {
-
-			if ($date_info === FALSE) continue;
 
 			foreach ($periods as $period) {
 

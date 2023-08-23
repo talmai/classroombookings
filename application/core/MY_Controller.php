@@ -1,9 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class MY_Controller extends CI_Controller
 {
-
 
 	/**
 	 * Global data for view
@@ -37,6 +36,8 @@ class MY_Controller extends CI_Controller
 
 			$this->lang->load('crbs');
 			$this->load->helper('language');
+			
+			$this->lang->load('custom'); // Ibam: added
 
 			$tz = setting('timezone');
 			if (strlen($tz)) {
@@ -59,7 +60,7 @@ class MY_Controller extends CI_Controller
 		// Check loggedin status
 		if ( ! $this->userauth->logged_in()) {
 			if ($msg) {
-				$this->session->set_flashdata('auth', msgbox('error', $this->lang->line('crbs_mustbeloggedin')));
+				$this->session->set_flashdata('auth', msgbox('error', $this->lang->line('crbs_mustbeloggedin') ));
 			}
 			redirect('login');
 		}
@@ -69,7 +70,7 @@ class MY_Controller extends CI_Controller
 	public function require_auth_level($level)
 	{
 		if ( ! $this->userauth->is_level($level)) {
-			$this->session->set_flashdata('auth', msgbox('error', $this->lang->line('crbs_mustbeadmin')));
+			$this->session->set_flashdata('auth', msgbox('error', $this->lang->line('crbs_mustbeadmin')) );
 			redirect(site_url());
 		}
 	}

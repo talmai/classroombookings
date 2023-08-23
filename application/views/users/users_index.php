@@ -2,9 +2,14 @@
 
 echo $this->session->flashdata('saved');
 
+$this->lang->load('users');
+if ( !($this->lang->line('Type')) ) {
+	$this->lang->load('custom'); 
+}
+
 $iconbar = iconbar(array(
-	array('users/add', 'Add User', 'add.png'),
-	array('users/import', 'Import Users', 'user_import.png'),
+	array('users/add', $this->lang->line('AddUser'), 'add.png'),
+	array('users/import', $this->lang->line('ImportUsers'), 'user_import.png'),
 ));
 
 echo $iconbar;
@@ -21,11 +26,11 @@ $sort_cols = ["Type", "Enabled", "Username", "Display Name", "Last Login", "Acti
 		<col /><col /><col /><col />
 		<thead>
 		<tr class="heading">
-			<td width="7%" class="h" title="Type">Type</td>
-			<td width="8%" class="h" title="Enabled">Enabled</td>
-			<td width="20%" class="h" title="Username">Username</td>
-			<td width="20%" class="h" title="Name">Display name</td>
-			<td width="20%" class="h" title="Lastlogin">Last login</td>
+			<td width="7%" class="h" title="Type"><?= $this->lang->line('Type') ?></td>
+			<td width="8%" class="h" title="Enabled"><?= $this->lang->line('Enabled') ?></td>
+			<td width="20%" class="h" title="Username"><?= $this->lang->line('Username') ?></td>
+			<td width="20%" class="h" title="Name"><?= $this->lang->line('Displayname') ?></td>
+			<td width="20%" class="h" title="Lastlogin"><?= $this->lang->line('Lastlogin') ?></td>
 			<td width="5%" class="n" title="X"></td>
 		</tr>
 		</thead>
@@ -48,7 +53,7 @@ $sort_cols = ["Type", "Enabled", "Username", "Display Name", "Last Login", "Acti
 			?></td>
 			<td><?php
 			if($user->lastlogin == '0000-00-00 00:00:00' || empty($user->lastlogin)){
-				$lastlogin = 'Never';
+				$lastlogin = $this->lang->line('Never');
 			} else {
 				$lastlogin = date("d/m/Y, H:i", strtotime($user->lastlogin));
 			}

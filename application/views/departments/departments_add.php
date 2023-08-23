@@ -9,10 +9,10 @@ echo form_open('departments/save', array('class' => 'cssform', 'id' => 'departme
 
 <fieldset>
 
-	<legend accesskey="D" tabindex="<?= tab_index() ?>">Department details</legend>
+	<legend accesskey="D" tabindex="<?= tab_index() ?>"><?= $this->lang->line('Departmentdetails') ?></legend>
 
 	<p>
-		<label for="name" class="required">Name</label>
+		<label for="name" class="required"><?= $this->lang->line('Name') ?></label>
 		<?php
 		$field = 'name';
 		$value = set_value($field, isset($department) ? $department->name : '', FALSE);
@@ -29,7 +29,7 @@ echo form_open('departments/save', array('class' => 'cssform', 'id' => 'departme
 	<?php echo form_error($field); ?>
 
 	<p>
-		<label for="description">Description</label>
+		<label for="description"><?= $this->lang->line('Description') ?></label>
 		<?php
 		$field = 'description';
 		$value = set_value($field, isset($department) ? $department->description : '', FALSE);

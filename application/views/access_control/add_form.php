@@ -9,11 +9,14 @@ $attrs = [
 
 echo form_open('access_control/save', $attrs);
 
+if ( !($this->lang->line('Type')) ) {
+	$this->lang->load('custom'); 
+}
 ?>
 
 <fieldset>
 
-	<legend accesskey="A">Access Control Entry</legend>
+	<legend accesskey="A"><?= $this->lang->line('AccessControlEntry') ?></legend>
 
 	<?php
 	echo form_hidden('target', 'R');
@@ -23,7 +26,7 @@ echo form_open('access_control/save', $attrs);
 
 	<?php $field = 'target_id'; ?>
 	<p>
-		<label for="target_id">Room</label>
+		<label for="target_id"><?= $this->lang->line('Room') ?></label>
 		<?php
 		$options = array('' => '');
 		if ($rooms) {
@@ -44,15 +47,15 @@ echo form_open('access_control/save', $attrs);
 	<?php $field = 'actor'; ?>
 	<p data-xax="on change add .hidden to .actor-choice
 			then if event.target.value == 'D' then remove .hidden from .actor-choice-D">
-		<label for="who">Who</label>
+		<label for="who"><?= $this->lang->line('Who') ?></label>
 		<?php
-		// $options = array(
+		/* $options = array(
 		// 	'A' => 'Any logged-in user',
 		// 	'D' => 'Department',
-		// );
+		// ); */
 		$options = [
-			['value' => 'A', 'label' => 'Any logged-in user'],
-			['value' => 'D', 'label' => 'Department'],
+			['value' => 'A', 'label' => $this->lang->line('Anyloggedinuser')],
+			['value' => 'D', 'label' => $this->lang->line('Department')],
 		];
 
 		foreach ($options as $opt) {
@@ -73,9 +76,9 @@ echo form_open('access_control/save', $attrs);
 	<?php $field = 'department_id'; ?>
 	<div class="actor-choice" up-show-for="D">
 		<p>
-			<label for="department">Department</label>
+			<label for="department"><?= $this->lang->line('Department') ?></label>
 			<?php
-			$options = array('' => '(None)');
+			$options = array('' => '(Nenhum)');
 			if ($departments) {
 				foreach ($departments as $department) {
 					$options[$department->department_id] = html_escape($department->name);

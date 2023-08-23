@@ -9,7 +9,7 @@ $time_format = setting('time_format_period');
 
 		<div class="box">
 
-			<h3 style="margin: 0 0 16px 0">Bookings in my rooms</h3>
+			<h3 style="margin: 0 0 16px 0"><?= $this->lang->line('Bookingsinmyrooms') ?></h3>
 			<ul class="dash-booking-list">
 
 				<?php

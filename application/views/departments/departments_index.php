@@ -3,7 +3,7 @@
 echo $this->session->flashdata('saved');
 
 $iconbar = iconbar(array(
-	array('departments/add', 'Add Department', 'add.png'),
+	array('departments/add', $this->lang->line('AddDepartment'), 'add.png'),
 ));
 
 echo $iconbar;
@@ -16,8 +16,8 @@ $sort_cols = ["Name", "Description", "None"];
 	<col /><col /><col />
 	<thead>
 	<tr class="heading">
-		<td class="h" title="Name">Name</td>
-		<td class="h" title="Description">Description</td>
+		<td class="h" title="Name"><?= $this->lang->line('Name') ?></td>
+		<td class="h" title="Description"><?= $this->lang->line('Description') ?></td>
 		<td class="n" title="X">&nbsp;</td>
 	</tr>
 	</thead>
@@ -39,7 +39,7 @@ $sort_cols = ["Name", "Description", "None"];
 	</tr>
 	<?php $i++; }
 	} else {
-		echo '<td colspan="4" align="center" style="padding:16px 0">No departments exist!</td>';
+		echo '<td colspan="4" align="center" style="padding:16px 0">'.$this->lang->line('NoDepartExists').'</td>';
 	}
 	?>
 	</tbody>

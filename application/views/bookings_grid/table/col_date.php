@@ -22,7 +22,8 @@ if ($date->date == $today->format('Y-m-d')) {
 	$date_fmt = setting('date_format_weekday');
 	if (strlen($date_fmt)) {
 		$dt = datetime_from_string($date->date);
-		$format = $dt->format($date_fmt);
+		
+		$format =  $dt->format($date_fmt); // $this->localize( $dt->format($date_fmt) ); //
 		echo "<br>";
 		echo "<span style='font-size: 90%'>{$format}</span>";
 	}

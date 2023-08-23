@@ -1,9 +1,11 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Periods_model extends CI_Model
 {
 
+	// CI instance
+	private $CI;
 
 	public $days = array();
 
@@ -13,14 +15,17 @@ class Periods_model extends CI_Model
 		parent::__construct();
 
 		$this->load->model('crud_model');
+		
+		$this->CI =& get_instance();
+		$this->CI->lang->load('calendar');
 
-		$this->days[1] = 'Monday';
-		$this->days[2] = 'Tuesday';
-		$this->days[3] = 'Wednesday';
-		$this->days[4] = 'Thursday';
-		$this->days[5] = 'Friday';
-		$this->days[6] = 'Saturday';
-		$this->days[7] = 'Sunday';
+		$this->days[1] = $this->CI->lang->line('cal_monday'); //'Segunda';
+		$this->days[2] = $this->CI->lang->line('cal_tuesday'); //'Terça';
+		$this->days[3] = $this->CI->lang->line('cal_wednesday'); //'Quarta';
+		$this->days[4] = $this->CI->lang->line('cal_thursday'); //'Quinta';
+		$this->days[5] = $this->CI->lang->line('cal_friday'); //'Sexta';
+		$this->days[6] = $this->CI->lang->line('cal_saturday'); //'Sábado';
+		$this->days[7] = $this->CI->lang->line('cal_sunday'); //'Domingo';
 	}
 
 

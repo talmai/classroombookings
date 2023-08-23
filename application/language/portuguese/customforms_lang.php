@@ -1,0 +1,51 @@
+<?php
+
+$lang['errorNoFile'] = 'Você não selecionou um arquivo para enviar'; // You did not select a file to upload
+$lang['AccessControl'] = 'Controle de acesso';
+$lang['AccessControlEntry'] = 'Entrada de controle de acesso'; // Access Control Entry
+$lang['Actor'] = 'Ator';
+$lang['AddEntry'] = 'Adicionar entrada';
+$lang['again'] = 'de novo';
+$lang['AllUsers'] = 'Todos os usuários';
+$lang['Anyloggedinuser'] = 'Qualquer usuário logado';
+$lang['Canbebooked'] = 'Pode ser reservado';
+$lang['Created'] = 'Criado em';
+$lang['CustomFields'] = 'Campos personalizados';
+$lang['Department'] = 'Departamento / ministério';
+$lang['Department'] = 'Ministério';
+$lang['Displayname'] = 'Nome';
+$lang['Emailaddress'] = 'Endereço de e-mail';
+$lang['Enabled'] = 'Ativo';
+$lang['Error'] = 'Erro';
+$lang['Failedvalidation'] = 'Falha na validação';
+$lang['FieldDetails'] = 'Detalhes do campo';
+$lang['Fileupload'] = 'Enviar arquivo';
+$lang['hintSelectableOptions'] = 'Insira as opções selecionáveis para a lista suspensa aqui; um em cada linha.'; // Enter the selectable options for the dropdown list here; one on each line.
+$lang['ImportMoreUsers'] = 'Importar mais usuários'; // 'Import More Users'
+$lang['Items'] = 'Itens';
+$lang['Lastlogin'] = 'Último login';
+$lang['Location'] = 'Localização'; 
+$lang['msgConfirmDeletion'] = 'Confirma a exclusão deste item?'; // Are you sure you want to remove this entry?
+$lang['msgEntryExists'] = 'Já existe uma entrada para esta combinação.'; // 'An entry for this combination already exists.';
+$lang['Name'] = 'Nome';
+$lang['No'] = 'Não';
+$lang['noAccessEntryFound'] = 'Nenhuma entrada de controle de acesso encontrada!'; // No access control entries found!
+$lang['Nopassword'] = 'Sem senha';
+$lang['Notavailable'] = 'Não disponível'; // Not available
+$lang['Notes'] = 'Notas';
+$lang['Options'] = 'Opções';
+$lang['Permission'] = 'Permissões';
+$lang['RoomID'] = 'ID da sala';
+$lang['Row'] = 'Linha';
+$lang['Status'] = 'Situação';
+$lang['Success'] = 'Sucesso';
+$lang['Targettype'] = 'Tipo de destino';
+$lang['Type'] = 'Tipo';
+$lang['Userexists'] = 'Usuário já existe';
+$lang['Username'] = 'Nome de usuário';
+$lang['Usernameempty'] = 'Campo usuário vazio';
+$lang['warmChangeFieldType'] = 'Não é possível alterar o tipo de um campo. Em vez disso, exclua o campo e crie um novo.'; // You cannot change the type of a field. Instead, delete the field and create a new one.
+$lang['Who'] = 'Quem';
+$lang['Yes'] = 'Sim';
+
+

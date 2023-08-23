@@ -1,6 +1,10 @@
 
 <?php
 echo form_open($form_action, ['method' => 'get', 'id' => 'bookings_controls_room'], $query_params);
+if(!$this->lang->line('Room')){
+	$this->lang->load('custom');
+}
+
 ?>
 
 <table>
@@ -9,7 +13,7 @@ echo form_open($form_action, ['method' => 'get', 'id' => 'bookings_controls_room
 			<label>
 				<?php
 				$url = "rooms/info/{$room->room_id}";
-				$name = 'Room:';
+				$name = $this->lang->line('Room').':';
 				$link = anchor($url, $name, [
 					'up-layer' => 'new drawer',
 					'up-position' => 'left',

@@ -6,6 +6,9 @@ $this->table->set_template([
 	'table_open' => '<table class="border-table" width="100%" cellpadding="6" cellspacing="0" border="0">',
 ]);
 
+if ( !($this->lang->line('BookingsTitle')) ) {
+	$this->lang->load('custom');
+}
 
 $date_format = setting('date_format_long', 'crbs');
 
@@ -13,7 +16,7 @@ $date_format = setting('date_format_long', 'crbs');
 //
 $info[] = [
 	'name' => 'date',
-	'label' => 'Date',
+	'label' => $this->lang->line('Date'),
 	'value' => $booking->date->format($date_format),
 ];
 
@@ -21,7 +24,7 @@ $info[] = [
 //
 $info[] = [
 	'name' => 'week',
-	'label' => 'Week',
+	'label' => $this->lang->line('Week'),
 	'value' => week_dot($booking->week, 'sm') . ' ' . html_escape($booking->week->name),
 ];
 
@@ -30,13 +33,13 @@ if ($booking->repeat_id) {
 	$weekday = Calendar::get_day_name($booking->repeat->weekday);
 	$info[] = [
 		'name' => 'occurs',
-		'label' => 'Occurs',
+		'label' => $this->lang->line('Occurs'),
 		'value' => sprintf("%s, every %s", $booking->week->name, $weekday),
 	];
 } else {
 	$info[] = [
 		'name' => 'occurs',
-		'label' => 'Occurs',
+		'label' => $this->lang->line('Occurs'),
 		'value' => 'Once',
 	];
 }
@@ -52,7 +55,7 @@ if (strlen($time_fmt)) {
 }
 $info[] = [
 	'name' => 'period',
-	'label' => 'Period',
+	'label' => $this->lang->line('Period'),
 	'value' => html_escape($booking->period->name . $time),
 ];
 
@@ -76,11 +79,11 @@ if ($booking->user) {
 
 $user_value = ($show_user && ! empty($booking->user))
 	? html_escape($user_label)
-	: '<em>Not available</em>';
+	: '<em>'.$this->lang->line('Notavailable').'</em>';
 
 $info[] = [
 	'name' => 'user',
-	'label' => 'Booked by',
+	'label' => $this->lang->line('Bookedby'),
 	'value' => $user_value,
 ];
 
@@ -92,7 +95,7 @@ $department = ($booking->department)
 if ($department) {
 	$info[] = [
 		'name' => 'department',
-		'label' => 'Department',
+		'label' => $this->lang->line('Department'),
 		'value' => html_escape($department->name),
 	];
 }
@@ -102,7 +105,7 @@ if ($department) {
 if (strlen($booking->notes)) {
 	$info[] = [
 		'name' => 'notes',
-		'label' => 'Notes',
+		'label' => $this->lang->line('Notes'),
 		'value' => html_escape($booking->notes),
 	];
 }

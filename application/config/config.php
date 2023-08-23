@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $scheme = (isset($_SERVER["REQUEST_SCHEME"]) ? $_SERVER['REQUEST_SCHEME'] : 'http');
-if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') $scheme = 'https';
 $dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), "/\\") . '/';
 $host = $_SERVER['HTTP_HOST'];
 $config['base_url'] = "{$scheme}://{$host}{$dir}";
@@ -39,7 +38,8 @@ $config['base_url'] = "{$scheme}://{$host}{$dir}";
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+//$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +80,10 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+
+//$config['language']	= 'english';
+$config['language']	= 'portuguese';
+
 
 /*
 |--------------------------------------------------------------------------

@@ -1,10 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Rooms extends MY_Controller
 {
-
-
 
 
 	public function __construct()
@@ -12,6 +10,10 @@ class Rooms extends MY_Controller
 		parent::__construct();
 
 		$this->require_logged_in();
+		
+		if(!$this->lang->line('CustomFields')){
+			$this->lang->load('custom');
+		}
 
 		$this->load->model('crud_model');
 		$this->load->model('rooms_model');
@@ -21,12 +23,12 @@ class Rooms extends MY_Controller
 		$this->data['max_size_bytes'] = max_upload_file_size();
 		$this->data['max_size_human'] = byte_format(max_upload_file_size());
 
-		$this->data['showtitle'] = 'Rooms';
+		$this->data['showtitle'] = $this->lang->line('Rooms');
 
 		$this->data['rooms_icons'] = [
-			['rooms', 'Rooms', 'school_manage_rooms.png'],
-			['rooms/fields', 'Custom Fields', 'room_fields.png'],
-			['access_control', 'Access Control', 'key.png'],
+			['rooms', $this->lang->line('Rooms'), 'school_manage_rooms.png'],
+			['rooms/fields', $this->lang->line('CustomFields'), 'room_fields.png'],
+			['access_control', $this->lang->line('AccessControl'), 'key.png'],
 		];
 	}
 
@@ -35,13 +37,13 @@ class Rooms extends MY_Controller
 	function info($room_id = NULL)
 	{
 		if (empty($room_id)) {
-			show_error('No room to show');
+			show_error( $this->lang->line('Noroomtoshow') ); //No room to show
 		}
 
 		$this->data['room'] = $this->rooms_model->Get($room_id);
 
 		if (empty($this->data['room'])) {
-			show_error("The requested room could not be found.");
+			show_error( $this->lang->line('erroCouldnBeFound') );
 		}
 
 		$this->load->library('table');
@@ -63,23 +65,23 @@ class Rooms extends MY_Controller
 	public function photo($room_id = NULL)
 	{
 		if (empty($room_id)) {
-			show_error('No room to show');
+			show_error( $this->lang->line('Noroomtoshow') );
 		}
 
 		$room = $this->rooms_model->Get($room_id);
 
 		if (empty($room)) {
-			show_error("The requested room could not be found.");
+			show_error( $this->lang->line('erroCouldnBeFound') );
 		}
 
 		if ( ! strlen($room->photo)) {
-			show_error('No photo available.');
+			show_error( $this->lang->line('Nophotoavailable') );
 		}
 
 		$photo_path = "uploads/{$room->photo}";
 
 		if ( ! is_file(FCPATH . $photo_path)) {
-			show_error('Photo file does not exist.');
+			show_error( $this->lang->line('erroPhotoDoesntEx') );
 		}
 
 		$url = base_url($photo_path);
@@ -102,7 +104,7 @@ class Rooms extends MY_Controller
 
 		$this->data['rooms'] = $this->rooms_model->Get();
 
-		$this->data['title'] = 'Rooms';
+		$this->data['title'] = $this->lang->line('Rooms');
 
 		$icons = iconbar($this->data['rooms_icons'], 'rooms');
 		$body = $this->load->view('rooms/rooms_index', $this->data, TRUE);
@@ -111,7 +113,6 @@ class Rooms extends MY_Controller
 
 		return $this->render();
 	}
-
 
 
 
@@ -128,7 +129,7 @@ class Rooms extends MY_Controller
 		$this->data['fields'] = $this->rooms_model->GetFields();
 		$this->data['fieldvalues'] = array();
 
-		$this->data['title'] = 'Add Room';
+		$this->data['title'] = $this->lang->line('Addroom');//'Add Room';
 		// $this->data['showtitle'] = $this->data['title'];
 
 		$columns = array(
@@ -172,7 +173,7 @@ class Rooms extends MY_Controller
 		$this->data['fields'] = $this->rooms_model->GetFields();
 		$this->data['fieldvalues'] = $this->rooms_model->GetFieldValues($id);
 
-		$this->data['title'] = 'Edit Room';
+		$this->data['title'] = $this->lang->line('EditRoom'); // 'Edit Room';
 		// $this->data['showtitle'] = $this->data['title'];
 
 		$columns = array(
@@ -393,13 +394,13 @@ class Rooms extends MY_Controller
 			redirect('rooms');
 		}
 
-		$this->data['action'] = 'rooms/delete';
+		$this->data['action'] = 'salas/excluir'; //'rooms/delete';
 		$this->data['id'] = $id;
-		$this->data['cancel'] = 'rooms';
-		$this->data['text'] = 'If you delete this room, <strong>all bookings</strong> for this room will be <strong>permanently deleted</strong> as well.';
+		$this->data['cancel'] = 'salas'; //'rooms';
+		$this->data['text'] = $this->lang->line('textConfirmDeletion');
 
 		$row = $this->rooms_model->Get($id);
-		$this->data['title'] = 'Delete Room ('.html_escape($row->name).')';
+		$this->data['title'] = $this->lang->line('DeleteRoom').' ('.html_escape($row->name).')';
 
 		$icons = iconbar($this->data['rooms_icons'], 'rooms');
 		$title = "<h2>{$this->data['title']}</h2>";
@@ -428,7 +429,7 @@ class Rooms extends MY_Controller
 
 		$this->data['options_list'] = $this->rooms_model->options;
 		$this->data['fields'] = $this->rooms_model->GetFields();
-		$this->data['title'] = 'Custom Fields';
+		$this->data['title'] = $this->lang->line('CustomFields'); //'Custom Fields';
 		// $this->data['showtitle'] = 'Custom Fields';
 
 		$icons = iconbar($this->data['rooms_icons'], 'rooms/fields');
@@ -448,7 +449,7 @@ class Rooms extends MY_Controller
 
 		$this->data['options_list'] = $this->rooms_model->options;
 
-		$this->data['title'] = 'Add Field';
+		$this->data['title'] = $this->lang->line('AddField'); //'Add Field';
 		// $this->data['showtitle'] = $this->data['title'];
 
 		$columns = array(
@@ -485,7 +486,7 @@ class Rooms extends MY_Controller
 		$this->data['field'] = $this->rooms_model->GetFields($id);
 		$this->data['options_list'] = $this->rooms_model->options;
 
-		$this->data['title'] = 'Edit Field';
+		$this->data['title'] = $this->lang->line('EditField') ;
 		// $this->data['showtitle'] = $this->data['title'];
 
 		$columns = array(
@@ -537,10 +538,10 @@ class Rooms extends MY_Controller
 
 		if (empty($field_id)) {
 			$field_id = $this->rooms_model->field_add($field_data);
-			$flashmsg = msgbox('info', "The {$field_data['name']} field has been added.");
+			$flashmsg = msgbox('info', $this->lang->line('Thefield')." {$field_data['name']} ".$this->lang->line('hasbeenadded').".");
 		} else {
 			$this->rooms_model->field_edit($field_id, $field_data);
-			$flashmsg = msgbox('info', "The {$field_data['name']} field has been updated.");
+			$flashmsg = msgbox('info', $this->lang->line('Thefield')." {$field_data['name']} ".$this->lang->line('hasbeenupdated').".");
 		}
 
 		$this->session->set_flashdata('saved', $flashmsg, TRUE);
@@ -570,7 +571,7 @@ class Rooms extends MY_Controller
 		$this->data['cancel'] = 'rooms/fields';
 
 		$row = $this->rooms_model->GetFields($id);
-		$this->data['title'] = 'Delete Field ('.html_escape($row->name).')';
+		$this->data['title'] = $this->lang->line('DeleteField').' ('.html_escape($row->name).')';
 		// $this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('partials/deleteconfirm', $this->data, TRUE);
 

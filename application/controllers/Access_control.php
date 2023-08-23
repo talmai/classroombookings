@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Access_control extends MY_Controller
 {
@@ -10,24 +10,31 @@ class Access_control extends MY_Controller
 		parent::__construct();
 
 		$this->require_auth_level(ADMINISTRATOR);
+		if(!$this->lang->line('Rooms')){
+			$this->lang->load('custom');
+		}
 
 		$this->load->model('access_control_model');
 		$this->load->model('departments_model');
 		$this->load->model('rooms_model');
 		$this->load->model('users_model');
 
-		$this->data['showtitle'] = 'Rooms';
+		$this->data['showtitle'] = $this->lang->line('Rooms');
 
 		$this->data['rooms_icons'] = [
 			['rooms', 'Rooms', 'school_manage_rooms.png'],
-			['rooms/fields', 'Custom Fields', 'room_fields.png'],
-			['access_control', 'Access Control', 'key.png'],
+			['rooms/fields', $this->lang->line('CustomFields'), 'room_fields.png'],
+			['access_control', $this->lang->line('AccessControl'), 'key.png'],
 		];
 	}
 
 
 	public function index()
 	{
+		if(!$this->lang->line('Rooms')){
+			$this->lang->load('custom');
+		}
+				
 		$filter_keys = ['actor', 'department_id', 'room_id'];
 		$filter = [];
 		foreach ($filter_keys as $k) {
@@ -44,7 +51,7 @@ class Access_control extends MY_Controller
 		$this->data['departments'] = $this->departments_model->Get(NULL, NULL, NULL);
 		$this->data['rooms'] = $this->rooms_model->Get();
 
-		$this->data['title'] = 'Rooms';
+		$this->data['title'] = $this->lang->line('Rooms');
 
 		$icons = iconbar($this->data['rooms_icons'], 'access_control');
 		$body = $this->load->view('access_control/index', $this->data, TRUE);
@@ -62,7 +69,7 @@ class Access_control extends MY_Controller
 			show_404();
 		}
 
-		$this->data['title'] = 'Add Entry';
+		$this->data['title'] = $this->lang->line('AddEntry');
 
 		$this->data['departments'] = $this->departments_model->Get(NULL, NULL, NULL);
 		$this->data['rooms'] = $this->rooms_model->Get();
@@ -73,7 +80,6 @@ class Access_control extends MY_Controller
 			echo $body;
 			return;
 		}
-
 
 		$icons = iconbar($this->data['rooms_icons'], 'access_control');
 		$title = "<h2>{$this->data['title']}</h2>";
@@ -87,15 +93,15 @@ class Access_control extends MY_Controller
 	public function save()
 	{
 		$this->load->library('form_validation');
-		$this->form_validation->set_message('is_unique', 'An entry for this combination already exists.');
+		$this->form_validation->set_message('is_unique', $this->lang->line('msgEntryExists'));
 
-		$this->form_validation->set_rules('target', 'Target type', 'required|exact_length[1]');
-		$this->form_validation->set_rules('target_id', 'Room ID', 'required|integer');
-		$this->form_validation->set_rules('actor', 'Actor', 'required|exact_length[1]');
+		$this->form_validation->set_rules('target', $this->lang->line('Targettype'), 'required|exact_length[1]');
+		$this->form_validation->set_rules('target_id', $this->lang->line('RoomID'), 'required|integer');
+		$this->form_validation->set_rules('actor',  $this->lang->line('Actor'), 'required|exact_length[1]');
 
 		switch ($this->input->post('actor')) {
 			case 'D':
-				$this->form_validation->set_rules('department_id', 'Department', 'required|integer');
+				$this->form_validation->set_rules('department_id',  $this->lang->line('Department'), 'required|integer');
 			break;
 		}
 

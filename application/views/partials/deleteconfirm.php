@@ -1,6 +1,6 @@
 <?php echo form_open( $action, '', array( 'id' => $id ) ); ?>
 
-<p class="msgbox question">Are you sure you want to delete this item?</p>
+<p class="msgbox question">Tem certeza de que deseja excluir este item?</p>
 <?php if( isset($text) ){ ?><p class="msgbox exclamation"><?php echo $text ?></p><?php } ?>
 <br /><br />
 <table cellpadding="0" cellspacing="0">

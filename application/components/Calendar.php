@@ -2,7 +2,7 @@
 
 namespace app\components;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 use \DateTime;
 use \DateInterval;
@@ -56,6 +56,8 @@ class Calendar
 		$this->CI =& get_instance();
 		$this->CI->load->helper('week');
 
+		$this->CI->lang->load('calendar');
+
 		$this->init($config);
 	}
 
@@ -100,7 +102,38 @@ class Calendar
 			'6' => 'Sat',
 			'7' => 'Sun',
 		];
-
+		
+		switch ($style) {
+			case 'long': return $long; break;
+			case 'short': return $short; break;
+			default: return FALSE;
+		}
+	}
+	
+	/* método para mostrar dias da semana em português brasileiro */
+	public static function get_nomes_dias($style = 'long')
+	{
+		
+		$long = [
+			'1' => 'Segunda',
+			'2' => 'Terça',
+			'3' => 'Quarta',
+			'4' => 'Quinta',
+			'5' => 'Sexta',
+			'6' => 'Sábado',
+			'7' => 'Domingo',
+		];
+		
+		$short = [
+			'1' => 'Seg',
+			'2' => 'Ter',
+			'3' => 'Qua',
+			'4' => 'Qui',
+			'5' => 'Sex',
+			'6' => 'Sab',
+			'7' => 'Dom',
+		];
+		
 		switch ($style) {
 			case 'long': return $long; break;
 			case 'short': return $short; break;
@@ -249,7 +282,12 @@ class Calendar
 
 	private function generate_month_header($month)
 	{
-		$title = $month->format('F Y');
+		
+		if($this->CI->lang->get_idioma()=="english"){
+			$title = $month->format('F Y'); // January 2023
+		}else{			
+			$title = $this->CI->lang->diaTraduzido($month,'LLLL yyyy'); // $month->format('F Y'); // 'EEEE d MMMM yyyy'
+		}
 
 		$cell = "<th colspan='7'>{$title}</th>";
 		$row = "<tr class='header-row'>{$cell}</tr>";
@@ -261,7 +299,13 @@ class Calendar
 	private function generate_month_week($month)
 	{
 		$cells = [];
-		$day_names = self::get_day_names('short');
+
+		if($this->CI->lang->get_idioma()=="english"){
+			$day_names = self::get_day_names('short'); // self::get_day_names('short');
+		}else{
+			$day_names = self::get_nomes_dias('short');
+		}
+		
 		foreach (self::get_days_of_week() as $day_num) {
 			$day_name = $day_names[$day_num];
 			$cells[] = "<td>{$day_name}</td>";
@@ -517,7 +561,6 @@ class Calendar
 
 		return $css;
 	}
-
 
 
 }

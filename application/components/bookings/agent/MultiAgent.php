@@ -2,7 +2,7 @@
 
 namespace app\components\bookings\agent;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 
 use app\components\bookings\exceptions\AgentException;
@@ -61,9 +61,13 @@ class MultiAgent extends BaseAgent
 				$this->max_allowed_bookings = ($max_active_bookings - $user_active_booking_count);
 			}
 		}
+		
+		if ( !($this->CI->lang->line('multiAgentTitle')) ) {
+			$this->CI->lang->load('custom');
+		}
 
 		$this->view = 'bookings/create/multi';
-		$this->title = 'Create multiple bookings';
+		$this->title = $this->CI->lang->line('multiAgentTitle');
 
 		$mb_id = (int) $this->CI->input->post_get('mb_id');
 		$step = $this->CI->input->post_get('step');
@@ -138,7 +142,7 @@ class MultiAgent extends BaseAgent
 	private function handle_details()
 	{
 		$this->view = 'bookings/create/multi/details';
-		$this->title = 'Create multiple bookings';
+		$this->title = $this->CI->lang->line('multiAgentTitle'); //'Create multiple bookings';
 
 		switch ($this->CI->input->post('type')) {
 
@@ -156,7 +160,7 @@ class MultiAgent extends BaseAgent
 	private function handle_recurring_customise()
 	{
 		$this->view = 'bookings/create/multi/recurring_customise';
-		$this->title = 'Create multiple recurring bookings';
+		$this->title = $this->CI->lang->line('CreateMultiplieRecur'); //'Create multiple recurring bookings';
 
 		$session_key = sprintf('mb_%d', $this->view_data['mb_id']);
 		$this->view_data['default_values'] = isset($_SESSION[$session_key]) ? $_SESSION[$session_key] : [];
@@ -170,7 +174,7 @@ class MultiAgent extends BaseAgent
 	private function handle_recurring_preview()
 	{
 		$this->view = 'bookings/create/multi/recurring_preview';
-		$this->title = 'Create multiple recurring bookings';
+		$this->title =  $this->CI->lang->line('CreateMultiplieRecur'); //'Create multiple recurring bookings';
 
 		$session_key = sprintf('mb_%d_slots', $this->view_data['mb_id']);
 
@@ -217,13 +221,13 @@ class MultiAgent extends BaseAgent
 				$actions = [];
 
 				if (array_key_exists($key, $existing_bookings)) {
-					$actions['do_not_book'] = 'Keep existing booking';
-					$actions['replace'] = 'Replace existing booking';
+					$actions['do_not_book'] = $this->CI->lang->line('Keepexistingbooking');
+					$actions['replace'] = $this->CI->lang->line('Replaceexistingbooking');
 					$instances[$key]['booking'] = $existing_bookings[$key];
 					$slot->conflict_count++;
 				} else {
-					$actions['book'] = 'Book';
-					$actions['do_not_book'] = 'Do not book';
+					$actions['book'] = $this->CI->lang->line('Book');
+					$actions['do_not_book'] = $this->CI->lang->line('Donotbook');
 				}
 
 				$instances[$key]['actions'] = $actions;
@@ -270,9 +274,9 @@ class MultiAgent extends BaseAgent
 
 		// Validation rules
 		$rules = [
-			['field' => 'date', 'label' => 'Date', 'rules' => 'required|valid_date'],
-			['field' => 'period_id', 'label' => 'Period', 'rules' => 'required|integer'],
-			['field' => 'room_id', 'label' => 'Room', 'rules' => 'required|integer'],
+			['field' => 'date', 'label' => $this->CI->lang->line('Date'), 'rules' => 'required|valid_date'],
+			['field' => 'period_id', 'label' => $this->CI->lang->line('Period'), 'rules' => 'required|integer'],
+			['field' => 'room_id', 'label' => $this->CI->lang->line('Room'), 'rules' => 'required|integer'],
 		];
 
 		$this->CI->load->library('form_validation');
@@ -340,26 +344,26 @@ class MultiAgent extends BaseAgent
 		$this->CI->load->library('form_validation');
 
 		$rules = [
-			['field' => 'mb_id', 'label' => 'ID', 'rules' => 'required|integer'],
-			['field' => 'type', 'label' => 'Type', 'rules' => 'required|in_list[single]'],
-			['field' => 'slot_single[]', 'label' => 'Notes', 'rules' => 'required'],
+			['field' => 'mb_id', 'label' => $this->CI->lang->line('ID'), 'rules' => 'required|integer'],
+			['field' => 'type', 'label' => $this->CI->lang->line('Type'), 'rules' => 'required|in_list[single]'],
+			['field' => 'slot_single[]', 'label' => $this->CI->lang->line('Notes'), 'rules' => 'required'],
 		];
 
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() === FALSE) {
-			$this->message = 'The form contained some invalid values. Please check and try again.';
+			$this->message = $this->CI->lang->line('ErrorInvalidValues');
 			return FALSE;
 		}
 
 		$rules = [
-			['field' => 'date', 'label' => 'Date', 'rules' => 'required|valid_date'],
-			['field' => 'session_id', 'label' => 'Session', 'rules' => 'required|integer'],
-			['field' => 'period_id', 'label' => 'Period', 'rules' => 'required|integer'],
-			['field' => 'room_id', 'label' => 'Room', 'rules' => 'required|integer'],
-			['field' => 'department_id', 'label' => 'Department', 'rules' => 'integer'],
-			['field' => 'user_id', 'label' => 'User', 'rules' => 'integer'],
-			['field' => 'notes', 'label' => 'Notes', 'rules' => 'max_length[255]'],
+			['field' => 'date', 'label' => $this->CI->lang->line('Date'), 'rules' => 'required|valid_date'],
+			['field' => 'session_id', 'label' => $this->CI->lang->line('Session'), 'rules' => 'required|integer'],
+			['field' => 'period_id', 'label' => $this->CI->lang->line('Period'), 'rules' => 'required|integer'],
+			['field' => 'room_id', 'label' => $this->CI->lang->line('Room'), 'rules' => 'required|integer'],
+			['field' => 'department_id', 'label' => $this->CI->lang->line('Department'), 'rules' => 'integer'],
+			['field' => 'user_id', 'label' => $this->CI->lang->line('User'), 'rules' => 'integer'],
+			['field' => 'notes', 'label' => $this->CI->lang->line('Notes'), 'rules' => 'max_length[255]'],
 		];
 
 		$form_slots = $this->CI->input->post('slot_single');
@@ -411,7 +415,7 @@ class MultiAgent extends BaseAgent
 			$this->CI->form_validation->set_data($booking_data);
 
 			if ($this->CI->form_validation->run() === FALSE) {
-				$this->message = 'One or more of the bookings contained some invalid values. Please check and try again.';
+				$this->message = $this->CI->lang->line('ErrorInvalidValues');
 				return FALSE;
 			}
 
@@ -433,7 +437,7 @@ class MultiAgent extends BaseAgent
 			$this->CI->multi_booking_model->delete($multibooking->mb_id);
 			// Finish
 			$this->success = TRUE;
-			$this->message = sprintf('%d bookings have been created.', count($booking_ids));
+			$this->message = sprintf( $this->CI->lang->line('msgCustomConfirmBooking'), count($booking_ids));
 			return TRUE;
 		}
 
@@ -441,7 +445,7 @@ class MultiAgent extends BaseAgent
 
 		$this->message = ($err)
 			? $err
-			: 'Could not create booking.';
+			: $this->CI->lang->line('ErrorCreatingBooking');
 
 		return FALSE;
 	}
@@ -451,20 +455,20 @@ class MultiAgent extends BaseAgent
 	{
 		// Validation rules
 		$rules = [
-			['field' => 'mb_id', 'label' => 'Multibooking ID', 'rules' => 'required|integer'],
-			['field' => 'step', 'label' => 'Step', 'rules' => 'required'],
-			['field' => 'department_id', 'label' => 'Department', 'rules' => 'integer'],
-			['field' => 'user_id', 'label' => 'User', 'rules' => 'integer'],
-			['field' => 'notes', 'label' => 'Notes', 'rules' => 'max_length[255]'],
-			['field' => 'recurring_start', 'label' => 'Recurring start', 'rules' => 'required'],
-			['field' => 'recurring_end', 'label' => 'Recurring end', 'rules' => 'required'],
+			['field' => 'mb_id', 'label' => $this->CI->lang->line('Multibooking ID'), 'rules' => 'required|integer'],
+			['field' => 'step', 'label' => $this->CI->lang->line('Step'), 'rules' => 'required'],
+			['field' => 'department_id', 'label' => $this->CI->lang->line('Department'), 'rules' => 'integer'],
+			['field' => 'user_id', 'label' => $this->CI->lang->line('User'), 'rules' => 'integer'],
+			['field' => 'notes', 'label' => $this->CI->lang->line('Notes'), 'rules' => 'max_length[255]'],
+			['field' => 'recurring_start', 'label' => $this->CI->lang->line('Recurringstart'), 'rules' => 'required'],
+			['field' => 'recurring_end', 'label' => $this->CI->lang->line('Recurringend'), 'rules' => 'required'],
 		];
 
 		$this->CI->load->library('form_validation');
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() === FALSE) {
-			$this->message = 'One or more of the bookings contained some invalid values. Please check and try again.';
+			$this->message = $this->CI->lang->line('ErrorInvalidValues');
 			return FALSE;
 		}
 
@@ -494,29 +498,29 @@ class MultiAgent extends BaseAgent
 		$this->CI->load->library('form_validation');
 
 		$rules = [
-			['field' => 'mb_id', 'label' => 'ID', 'rules' => 'required|integer'],
-			['field' => 'step', 'label' => 'Step', 'rules' => 'required|in_list[recurring_customise]'],
-			['field' => 'slots[]', 'label' => 'Slot', 'rules' => 'required'],
+			['field' => 'mb_id', 'label' => $this->CI->lang->line('ID'), 'rules' => 'required|integer'],
+			['field' => 'step', 'label' => $this->CI->lang->line('Step'), 'rules' => 'required|in_list[recurring_customise]'],
+			['field' => 'slots[]', 'label' => $this->CI->lang->line('Slot'), 'rules' => 'required'],
 		];
 
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() === FALSE) {
-			$this->message = 'The form contained some invalid values. Please check and try again.';
+			$this->message = $this->CI->lang->line('ErrorInvalidValues');
 			return FALSE;
 		}
 
 		// Rules for each slot
 
 		$rules = [
-			['field' => 'session_id', 'label' => 'Session', 'rules' => 'required|integer'],
-			['field' => 'period_id', 'label' => 'Period', 'rules' => 'required|integer'],
-			['field' => 'room_id', 'label' => 'Room', 'rules' => 'required|integer'],
-			['field' => 'department_id', 'label' => 'Department', 'rules' => 'integer'],
-			['field' => 'user_id', 'label' => 'User', 'rules' => 'integer'],
-			['field' => 'notes', 'label' => 'Notes', 'rules' => 'max_length[255]'],
-			['field' => 'recurring_start', 'label' => 'Recurring start', 'rules' => 'required|valid_date'],
-			['field' => 'recurring_end', 'label' => 'Recurring end', 'rules' => 'required|valid_date'],
+			['field' => 'session_id', 'label' => $this->CI->lang->line('Session'), 'rules' => 'required|integer'],
+			['field' => 'period_id', 'label' => $this->CI->lang->line('Period'), 'rules' => 'required|integer'],
+			['field' => 'room_id', 'label' => $this->CI->lang->line('Room'), 'rules' => 'required|integer'],
+			['field' => 'department_id', 'label' => $this->CI->lang->line('Department'), 'rules' => 'integer'],
+			['field' => 'user_id', 'label' => $this->CI->lang->line('User'), 'rules' => 'integer'],
+			['field' => 'notes', 'label' => $this->CI->lang->line('Notes'), 'rules' => 'max_length[255]'],
+			['field' => 'recurring_start', 'label' => $this->CI->lang->line('Recurringstart'), 'rules' => 'required|valid_date'],
+			['field' => 'recurring_end', 'label' => $this->CI->lang->line('Recurringend'), 'rules' => 'required|valid_date'],
 		];
 
 		$form_slots = $this->CI->input->post('slots');
@@ -573,7 +577,7 @@ class MultiAgent extends BaseAgent
 			$this->CI->form_validation->set_data($booking_data);
 
 			if ($this->CI->form_validation->run() === FALSE) {
-				$this->message = 'One or more of the bookings contained some invalid values. Please check and try again.';
+				$this->message = $this->CI->lang->line('ErrorInvalidValues');
 				return FALSE;
 			}
 
@@ -602,15 +606,15 @@ class MultiAgent extends BaseAgent
 		$this->CI->load->library('form_validation');
 
 		$rules = [
-			['field' => 'mb_id', 'label' => 'ID', 'rules' => 'required|integer'],
-			['field' => 'step', 'label' => 'Step', 'rules' => 'required|in_list[recurring_preview]'],
-			['field' => 'dates[]', 'label' => 'Dates', 'rules' => 'required'],
+			['field' => 'mb_id', 'label' => $this->CI->lang->line('ID'), 'rules' => 'required|integer'],
+			['field' => 'step', 'label' => $this->CI->lang->line('Step'), 'rules' => 'required|in_list[recurring_preview]'],
+			['field' => 'dates[]', 'label' => $this->CI->lang->line('Dates'), 'rules' => 'required'],
 		];
 
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() === FALSE) {
-			$this->message = 'The form contained some invalid values. Please check and try again.';
+			$this->message = $this->CI->lang->line('ErrorInvalidValues');
 			return FALSE;
 		}
 
@@ -656,7 +660,7 @@ class MultiAgent extends BaseAgent
 
 			if ( ! $repeat_id) {
 				$this->CI->db->trans_rollback();
-				$this->message = 'Could not create one or more recurring bookings.';
+				$this->message = $this->CI->lang->line('ErrorCreatingRecurBookings');
 				return FALSE;
 			}
 
@@ -665,14 +669,14 @@ class MultiAgent extends BaseAgent
 
 		if ($this->CI->db->trans_status() === FALSE) {
 			$this->CI->db->trans_rollback();
-			$this->message = 'Could not create recurring bookings.';
+			$this->message = $this->CI->lang->line('ErrorCreatingRecurBooking'); 
 			return FALSE;
 		}
 
 		$this->CI->db->trans_commit();
 
 		$this->success = TRUE;
-		$this->message = sprintf('%d recurring bookings have been created successfully.', count($repeat_ids));
+		$this->message = sprintf( $this->CI->lang->line('msgCustomConfirmRecurBookings') , count($repeat_ids));
 		return TRUE;
 	}
 

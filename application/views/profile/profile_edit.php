@@ -1,5 +1,5 @@
 <?php
-
+$this->lang->load('profile');
 echo $this->session->flashdata('saved');
 
 echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit'));
@@ -9,10 +9,10 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 <fieldset>
 
-	<legend accesskey="U" tabindex="<?php tab_index() ?>">User Information</legend>
+	<legend accesskey="U" tabindex="<?php tab_index() ?>"><?php echo $this->lang->line('Userdetails'); ?></legend>
 
 	<p>
-	  <label for="email" class="required">Email address</label>
+	  <label for="email" class="required"><?php echo $this->lang->line('Emailaddress'); ?></label>
 	  <?php
 		$email = set_value('email', $user->email, FALSE);
 		echo form_input(array(
@@ -29,7 +29,7 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 
 	<p>
-	  <label for="password1">Password</label>
+	  <label for="password1"><?php echo $this->lang->line('Password'); ?></label>
 	  <?php
 		echo form_password(array(
 			'name' => 'password1',
@@ -45,7 +45,7 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 
 	<p>
-	  <label for="password2">Password (again)</label>
+	  <label for="password2"><?php echo $this->lang->line('Password'); ?> (<?php echo $this->lang->line('again'); ?>)</label>
 	  <?php
 		echo form_password(array(
 			'name' => 'password2',
@@ -67,7 +67,7 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 
 	<p>
-	  <label for="firstname">First name</label>
+	  <label for="firstname"><?php echo $this->lang->line('Firstname'); ?></label>
 	  <?php
 		$firstname = set_value('firstname', $user->firstname, FALSE);
 		echo form_input(array(
@@ -84,7 +84,7 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 
 	<p>
-	  <label for="lastname">Last name</label>
+	  <label for="lastname"><?php echo $this->lang->line('Lastname'); ?></label>
 	  <?php
 		$lastname = set_value('lastname', $user->lastname, FALSE);
 		echo form_input(array(
@@ -101,7 +101,7 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 
 	<p>
-	  <label for="displayname">Display name</label>
+	  <label for="displayname"><?php echo $this->lang->line('Displayname'); ?></label>
 	  <?php
 		$displayname = set_value('displayname', $user->displayname, FALSE);
 		echo form_input(array(
@@ -118,7 +118,7 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 
 	<p>
-	  <label for="ext">Extension</label>
+	  <label for="ext"><?php echo $this->lang->line('Extension'); ?></label>
 	  <?php
 		$ext = set_value('ext', $user->ext, FALSE);
 		echo form_input(array(
@@ -139,7 +139,7 @@ echo form_open('profile/save', array('class' => 'cssform', 'id' => 'profile_edit
 
 <?php
 $this->load->view('partials/submit', array(
-	'submit' => array('Save', tab_index()),
+	'submit' => array($this->lang->line('Save'), tab_index()),
 ));
 
 echo form_close();

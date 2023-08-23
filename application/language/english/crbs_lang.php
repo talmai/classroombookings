@@ -2,6 +2,10 @@
 
 $lang['crbs_mustbeloggedin'] = 'You must be logged in to access this page.';
 $lang['crbs_mustbeadmin'] = 'You must be an Administrator to access this page.';
+$lang['username'] = 'Username';
+$lang['password'] = 'Password';
+$lang['loadtime'] = 'Load time';
+$lang['seconds'] = 'seconds'; 
 
 $lang['crbs_action_dberror'] = 'A database error occured while %s this item.';
 $lang['dberror'] = 'A database error occured while %s the %s.';

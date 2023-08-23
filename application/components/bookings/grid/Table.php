@@ -2,11 +2,16 @@
 
 namespace app\components\bookings\grid;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 use app\components\Calendar;
 use app\components\bookings\Context;
 use app\components\bookings\Slot;
+
+use \DateTime;
+use \DateTimeZone;
+use \DateTimeImmutable;
+use \IntlDateFormatter;
 
 
 class Table
@@ -166,14 +171,18 @@ class Table
 	{
 		$cells = [];
 
-		$day_names = Calendar::get_day_names();
+		if($this->CI->lang->get_idioma()=="english"){
+			$day_names = Calendar::get_day_names();
+		}else{
+			$day_names = Calendar::get_nomes_dias();
+		}
 
 		// Render header cell
 		//
 		$header_view_data = $params;
 		$header_view_data['day_names'] = $day_names;
-		$header_view_data['today'] = $this->context->today;
-		$header_view_name = sprintf('bookings_grid/table/row_%s', $params['name']);
+		$header_view_data['today'] = $this->context->today; // $this->diaTraduzido($this->context->today);
+		$header_view_name = sprintf( 'bookings_grid/table/row_%s', $params['name'] );
 		$cells[] = $this->CI->load->view($header_view_name, $header_view_data, TRUE);
 
 		// Render slots
@@ -201,6 +210,35 @@ class Table
 		$classes_str = implode(' ', $classes);
 
 		return "<tr class='{$classes_str}'>" . implode("\n", $cells) . "</tr>";
+	}
+	
+
+	/*  método específico para traduzir a data para Português brasileiro 
+		De obj DateTime para String
+	*/
+	public static function diaTraduzido($data) { // 28th July (jS F)-->(j M)
+		
+		$timezone = new DateTimeZone( date_default_timezone_get() );
+	    $dti1 = new DateTime( $data->format('j M Y') );
+		$strdt1 = $dti1->format('j M Y'); // OK. Não use "/"
+  	    $dt2 = DateTime::createFromFormat('j M y', $strdt1, $timezone );
+		
+		if ( $strdt1 ) {
+			$dtfmt = new IntlDateFormatter(
+				'pt-BR',
+				IntlDateFormatter::FULL,
+				IntlDateFormatter::NONE,
+				'America/Bahia',
+				IntlDateFormatter::GREGORIAN,
+				'd LLL'
+			); // LL = 09
+			
+			return $dtfmt->format($dti1);
+		} else {
+			return "Formato inválido de data.";
+		}
+		
+		return $strdt1;
 	}
 
 

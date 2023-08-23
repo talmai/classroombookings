@@ -12,10 +12,10 @@ echo form_open(current_url(), ['class' => 'cssform', 'id' => 'week_add'], ['week
 
 <fieldset>
 
-	<legend accesskey="W" tabindex="<?= tab_index() ?>">Week</legend>
+	<legend accesskey="W" tabindex="<?= tab_index() ?>"><?= $this->lang->line('Week') ?></legend>
 
 	<p>
-		<label for="name" class="required">Name</label>
+		<label for="name" class="required"><?= $this->lang->line('Name') ?></label>
 		<?php
 		$field = 'name';
 		$value = set_value($field, isset($week) ? $week->name : '', FALSE);
@@ -32,7 +32,7 @@ echo form_open(current_url(), ['class' => 'cssform', 'id' => 'week_add'], ['week
 	<?php echo form_error($field) ?>
 
 	<div class="input-group">
-		<label for="bgcol" class="required">Colour</label>
+		<label for="bgcol" class="required"><?= $this->lang->line('Colour') ?></label>
 		<?php
 		$field = 'bgcol';
 		$value = set_value($field, isset($week) ? $week->bgcol : '', FALSE);

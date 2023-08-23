@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 
 class Weeks_model extends CI_Model
@@ -99,7 +99,7 @@ class Weeks_model extends CI_Model
 	public function sleep_values($data)
 	{
 		$data['bgcol'] = ltrim($data['bgcol'], '#');
-		$data['fgcol'] = ltrim($data['fgcol'] ?? '', '#');
+		$data['fgcol'] = ltrim($data['fgcol'], '#');
 		return $data;
 	}
 

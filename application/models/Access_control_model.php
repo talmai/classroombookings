@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 class Access_control_model extends CI_Model
 {
@@ -41,9 +41,11 @@ class Access_control_model extends CI_Model
 	public static function get_actors()
 	{
 		return [
-			self::ACTOR_AUTHENTICATED => 'Any logged-in user',
-			self::ACTOR_DEPARTMENT => 'Department',
+			self::ACTOR_AUTHENTICATED => 'Qualquer usuário logado', 
+			self::ACTOR_DEPARTMENT => 'Departamento / ministério',
 		];
+		// 'Any logged-in user',
+		// 'Department',
 	}
 
 

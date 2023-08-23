@@ -2,7 +2,7 @@
 
 namespace app\components\bookings\agent;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 
 use app\components\bookings\exceptions\AgentException;
@@ -69,6 +69,10 @@ class UpdateAgent extends BaseAgent
 		$this->session = $this->CI->sessions_model->get($this->booking->session_id);
 		if ( ! $this->session) throw AgentException::forNoSession();
 
+		// Load custom localization
+		if(!$this->CI->lang->line('Rooms')){
+			$this->CI->lang->load('custom');
+		}
 		// Get edit mode.
 		// This flag helps determine what fields can be edited (important for recurring bookings selection)
 		// Options are single, future, or all.
@@ -109,7 +113,7 @@ class UpdateAgent extends BaseAgent
 	private function handle_edit()
 	{
 		$this->view = 'bookings/edit/form';
-		$this->title = 'Edit booking';
+		$this->title = $this->CI->lang->line('Editbooking');
 
 		if ($this->CI->input->post()) {
 			$this->process_edit_booking();
@@ -146,7 +150,7 @@ class UpdateAgent extends BaseAgent
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() == FALSE) {
-			$this->message = 'The form contained some invalid values. Please check and try again.';
+			$this->message = $this->CI->lang->line('ErrorInvalidValues');
 			return FALSE;
 		}
 
@@ -185,9 +189,9 @@ class UpdateAgent extends BaseAgent
 		if ($update) {
 
 			$msgs = [
-				self::EDIT_ONE => 'The booking has been updated successfully.',
-				self::EDIT_FUTURE => 'The booking and all future bookings in the series have been updated.',
-				self::EDIT_ALL => 'All bookings in the series have been updated successfully.',
+				self::EDIT_ONE => $this->CI->lang->line('msgBookingEdit1'),
+				self::EDIT_FUTURE => $this->CI->lang->line('msgBookingEditFuture'),
+				self::EDIT_ALL => $this->CI->lang->line('msgBookingEditAll'),
 			];
 
 			$this->message = $msgs[$this->edit_mode];
@@ -200,7 +204,7 @@ class UpdateAgent extends BaseAgent
 
 		$this->message = ($err)
 			? $err
-			: 'Could not create booking.';
+			: $this->CI->lang->line('ErrorCreatingBooking');
 
 		return FALSE;
 	}
@@ -211,27 +215,27 @@ class UpdateAgent extends BaseAgent
 		$rules = [];
 
 		if ($this->features[self::FEATURE_DATE]) {
-			$rules[] = ['field' => 'booking_date', 'label' => 'Date', 'rules' => sprintf('required|valid_date|no_conflict[%d]', $booking_id)];
+			$rules[] = ['field' => 'booking_date', 'label' => $this->CI->lang->line('Date'), 'rules' => sprintf('required|valid_date|no_conflict[%d]', $booking_id)];
 		}
 
 		if ($this->features[self::FEATURE_PERIOD]) {
-			$rules[] = ['field' => 'period_id', 'label' => 'Period', 'rules' => 'required|integer'];
+			$rules[] = ['field' => 'period_id', 'label' => $this->CI->lang->line('Period'), 'rules' => 'required|integer'];
 		}
 
 		if ($this->features[self::FEATURE_ROOM]) {
-			$rules[] = ['field' => 'room_id', 'label' => 'Room', 'rules' => 'required|integer'];
+			$rules[] = ['field' => 'room_id', 'label' => $this->CI->lang->line('Room'), 'rules' => 'required|integer'];
 		}
 
 		if ($this->features[self::FEATURE_DEPARTMENT]) {
-			$rules[] = ['field' => 'department_id', 'label' => 'Department', 'rules' => 'integer'];
+			$rules[] = ['field' => 'department_id', 'label' => $this->CI->lang->line('Department'), 'rules' => 'integer'];
 		}
 
 		if ($this->features[self::FEATURE_USER]) {
-			$rules[] = ['field' => 'user_id', 'label' => 'User', 'rules' => 'integer'];
+			$rules[] = ['field' => 'user_id', 'label' => $this->lang->CI->line('User'), 'rules' => 'integer'];
 		}
 
 		if ($this->features[self::FEATURE_NOTES]) {
-			$rules[] = ['field' => 'notes', 'label' => 'Notes', 'rules' => 'max_length[255]'];
+			$rules[] = ['field' => 'notes', 'label' => $this->lang->CI->line('Notes'), 'rules' => 'max_length[255]'];
 		}
 
 		return $rules;

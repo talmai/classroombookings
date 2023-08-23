@@ -2,7 +2,7 @@
 
 namespace app\components\bookings\grid;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 use app\components\bookings\Context;
 

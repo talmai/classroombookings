@@ -1,4 +1,7 @@
 <?php
+
+use app\components\bookings\grid\Table;
+
 $classes = [
 	'bookings-grid-header-cell',
 	'bookings-grid-header-cell-day',
@@ -7,7 +10,6 @@ $classes = [
 if ($date->date == $today->format('Y-m-d')) {
 	$classes[] = 'bookings-grid-header-cell-is-today';
 }
-
 ?>
 
 <th class="<?= implode(' ', $classes) ?>">
@@ -18,13 +20,14 @@ if ($date->date == $today->format('Y-m-d')) {
 			: '';
 		?>
 	</strong>
-	<?php
+<?php
 	$date_fmt = setting('date_format_weekday');
 	if (strlen($date_fmt)) {
 		$dt = datetime_from_string($date->date);
-		$format = $dt->format($date_fmt);
+		$dtTraduzida = $this->lang->diaTraduzido($dt,'d LLL');
+		$format = $dtTraduzida;
 		echo "<br>";
 		echo "<span style='font-size: 90%'>{$format}</span>";
 	}
-	?>
+?>
 </th>

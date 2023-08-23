@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Nenhum acesso direto ao script é permitido');
 
 use app\components\bookings\Context;
 use app\components\bookings\Grid;
@@ -18,11 +18,11 @@ class Bookings extends MY_Controller
 		parent::__construct();
 
 		$this->require_logged_in();
-
+		
 		$this->lang->load('bookings');
 
 		if ($this->userauth->is_level(TEACHER) && setting('maintenance_mode')) {
-			$this->data['title'] = 'Bookings';
+			$this->data['title'] = $this->lang->line('BookingsTitle');
 			$this->data['showtitle'] = '';
 			$this->data['body'] = '';
 			$this->render();
@@ -50,11 +50,15 @@ class Bookings extends MY_Controller
 			'base_uri' => $this->uri->segment(1),
 		]);
 
+		if ( !($this->lang->line('BookingsTitle')) ) {
+			$this->lang->load('bookings');
+		}
+		
 		$grid = new Grid($context);
 
 		$message = $this->session->flashdata('bookings');
 
-		$this->data['title'] = 'Bookings';
+		$this->data['title'] = $this->lang->line('BookingsTitle');
 		$this->data['showtitle'] = '';
 		$this->data['body'] = $message . $grid->render();
 
@@ -97,10 +101,10 @@ class Bookings extends MY_Controller
 			$this->load->helper('room');
 			$body = $msg . $this->load->view('bookings/view', $this->data, TRUE);
 		} else {
-			$body = msgbox('error', 'Could not find requested booking details.');
+			$body = msgbox('error', $this->lang->line('ErrorBooking1') );
 		}
 
-		$this->data['title'] = 'Booking details';
+		$this->data['title'] = $this->lang->line('Bookingdetails');
 		$this->data['showtitle'] = '';
 		$this->data['body'] = '<div class="bookings-view">' . $body . '</div>';
 
@@ -135,7 +139,7 @@ class Bookings extends MY_Controller
 			$this->load->helper('room');
 			$body = $this->load->view('bookings/card', $this->data, TRUE);
 		} else {
-			$body = msgbox('error', 'Could not find requested booking details.');
+			$body = msgbox('error', $this->lang->line('ErrorBooking1'));
 		}
 
 		$this->data['title'] = '';
@@ -165,10 +169,10 @@ class Bookings extends MY_Controller
 			$this->load->helper('room');
 			$body = $this->load->view('bookings/view_series', $this->data, TRUE);
 		} else {
-			$body = msgbox('error', 'Could not find requested booking details or is not recurring.');
+			$body = msgbox('error', $this->lang->line('ErrorBooking2') );
 		}
 
-		$this->data['title'] = 'Bookings in series';
+		$this->data['title'] = $this->lang->line('Bookingsinseries');
 		$this->data['showtitle'] = '';
 		$this->data['body'] = '<div class="bookings-view">' . $body . '</div>';
 
@@ -186,7 +190,7 @@ class Bookings extends MY_Controller
 	 */
 	public function create($type)
 	{
-		$this->data['title'] = 'Create booking';
+		$this->data['title'] = $this->lang->line('Createbooking');
 
 		if ($this->input->get('params')) {
 			$_SESSION['return_uri'] = 'bookings?' . $this->input->get('params');
@@ -202,7 +206,7 @@ class Bookings extends MY_Controller
 			: NULL;
 
 		if ( ! $type) {
-			$this->data['view'] = msgbox('error', 'Unrecognised booking type.');
+			$this->data['view'] = msgbox('error', $this->lang->line('ErrorBooking3') );
 			$this->data['body'] = $this->load->view('bookings/create', $this->data, TRUE);
 			return $this->render();
 		}
@@ -254,7 +258,7 @@ class Bookings extends MY_Controller
 	 */
 	public function edit($booking_id)
 	{
-		$this->data['title'] = 'Edit booking';
+		$this->data['title'] = $this->lang->line('Editbooking');
 
 		if ($this->input->get('params')) {
 			$_SESSION['return_uri'] = 'bookings?' . $this->input->get('params');
@@ -322,39 +326,39 @@ class Bookings extends MY_Controller
 		switch (TRUE) {
 
 			case ($booking === FALSE):
-				$body = msgbox('error', 'Could not find requested booking details.');
+				$body = msgbox('error', $this->lang->line('ErrorBooking1') );
 				break;
 
 			case (booking_cancelable($booking) === FALSE):
-				$body = msgbox('error', 'Booking is not editable.');
+				$body = msgbox('error', $this->lang->line('Bookingnoteditable'));
 				break;
 
 		}
 
 		if ($cancel_type = $this->input->post('cancel')) {
 
-			$error = msgbox('error', 'There was an error cancelling the booking.');
+			$error = msgbox('error', $this->lang->line('ErrorCancelingBooking'));
 
 			switch ($cancel_type) {
 
 				case '1':
 					$res = $this->bookings_model->cancel_single($booking_id);
-					$success = msgbox('info', 'The booking has been cancelled.');
+					$success = msgbox('info', $this->lang->line('OkCancelingBooking') );
 					break;
 
 				case 'future':
 					$res = $this->bookings_model->cancel_future($booking_id);
-					$success = msgbox('info', 'The selected booking and all future occurrences in the series have been cancelled.');
+					$success = msgbox('info', $this->lang->line('OkCancelingAllBookings1') );
 					break;
 
 				case 'all':
 					$res = $this->bookings_model->cancel_all($booking_id);
-					$success = msgbox('info', 'The whole recurring booking series has been cancelled.');
+					$success = msgbox('info', $this->lang->line('OkCancelingAllBookings2'));
 					break;
 
 				default:
 					$res = FALSE;
-					$error = msgbox('error', 'Invalid cancellation type.');
+					$error = msgbox('error', $this->lang->line('Invalidcanceltype') );
 			}
 
 			$msg = ($res) ? $success : $error;
@@ -394,7 +398,7 @@ class Bookings extends MY_Controller
 			if ($session) {
 				$_SESSION['current_session_id'] = $session->session_id;
 			} else {
-				$this->session->set_flashdata('bookings', msgbox('error', 'Requested session is not available.'));
+				$this->session->set_flashdata('bookings', msgbox('error', $this->lang->line('SessionNotAvai') ));
 			}
 		}
 
@@ -406,7 +410,5 @@ class Bookings extends MY_Controller
 		$return_uri = 'bookings?' . $params;
 		return redirect($return_uri);
 	}
-
-
 
 }
